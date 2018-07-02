@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -27,6 +27,8 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="Interop.SolidEdge">
       <HintPath>packages\Interop.SolidEdge.110.0.0\lib\net40\Interop.SolidEdge.dll</HintPath>
@@ -34,6 +36,8 @@
     <Reference Include="SolidEdge.Community.AddIn">
       <HintPath>packages\SolidEdge.Community.AddIn.110.0.0\lib\net40\SolidEdge.Community.AddIn.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="SolidEdge.Community">
       <HintPath>packages\SolidEdge.Community.110.0.0\lib\net40\SolidEdge.Community.dll</HintPath>
@@ -41,13 +45,47 @@
     <Reference Include="SolidEdge.Community.Reader">
       <HintPath>packages\SolidEdge.Community.Reader.2.0.0\lib\net40\SolidEdge.Community.Reader.dll</HintPath>
     </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConfigurationDialog.Designer.cs">
+      <DependentUpon>ConfigurationDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="ItemCatalogAddin.cs" />
+    <Compile Include="ItemCatalogEdgeBarController.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ItemCatalogEdgeBarController.Designer.cs">
+      <DependentUpon>ItemCatalogEdgeBarController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PartsLibrary.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PartsLibrary.Designer.cs">
+      <DependentUpon>PartsLibrary.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ConfigurationDialog.resx">
+      <DependentUpon>ConfigurationDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ItemCatalogEdgeBarController.resx">
+      <DependentUpon>ItemCatalogEdgeBarController.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PartsLibrary.resx">
+      <DependentUpon>PartsLibrary.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\SolidEdge.Community.AddIn.110.0.0\build\net40\SolidEdge.Community.AddIn.targets" Condition="Exists('packages\SolidEdge.Community.AddIn.110.0.0\build\net40\SolidEdge.Community.AddIn.targets')" />

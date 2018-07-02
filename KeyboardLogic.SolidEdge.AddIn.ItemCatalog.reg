@@ -1,0 +1,29 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\KeyboardLogic.SolidEdge.AddIn.ItemCatalog]
+@="KeyboardLogic.SolidEdge.AddIn.ItemCatalog.ItemCatalogAddIn"
+
+[HKEY_CLASSES_ROOT\KeyboardLogic.SolidEdge.AddIn.ItemCatalog\CLSID]
+@="{B440CD64-4926-446A-AA6E-A5115E21F43D}"
+
+[HKEY_CLASSES_ROOT\CLSID\{B440CD64-4926-446A-AA6E-A5115E21F43D}]
+@="KeyboardLogic.SolidEdge.AddIn.ItemCatalog.ItemCatalogAddIn"
+
+[HKEY_CLASSES_ROOT\CLSID\{B440CD64-4926-446A-AA6E-A5115E21F43D}\InprocServer32]
+@="mscoree.dll"
+"ThreadingModel"="Both"
+"Class"="KeyboardLogic.SolidEdge.AddIn.ItemCatalog.ItemCatalogAddIn"
+"Assembly"="KeyboardLogic.SolidEdge.AddIn.ItemCatalog, Version=1.0.6747.34392, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+"CodeBase"="file:///Y:/git/KeyboardLogic.SolidEdge.AddIn.ItemCatalog/bin/Debug/KeyboardLogic.SolidEdge.AddIn.ItemCatalog.dll"
+
+[HKEY_CLASSES_ROOT\CLSID\{B440CD64-4926-446A-AA6E-A5115E21F43D}\InprocServer32\1.0.6747.34392]
+"Class"="KeyboardLogic.SolidEdge.AddIn.ItemCatalog.ItemCatalogAddIn"
+"Assembly"="KeyboardLogic.SolidEdge.AddIn.ItemCatalog, Version=1.0.6747.34392, Culture=neutral, PublicKeyToken=null"
+"RuntimeVersion"="v4.0.30319"
+"CodeBase"="file:///Y:/git/KeyboardLogic.SolidEdge.AddIn.ItemCatalog/bin/Debug/KeyboardLogic.SolidEdge.AddIn.ItemCatalog.dll"
+
+[HKEY_CLASSES_ROOT\CLSID\{B440CD64-4926-446A-AA6E-A5115E21F43D}\ProgId]
+@="KeyboardLogic.SolidEdge.AddIn.ItemCatalog"
+
+[HKEY_CLASSES_ROOT\CLSID\{B440CD64-4926-446A-AA6E-A5115E21F43D}\Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}]
