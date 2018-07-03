@@ -65,13 +65,12 @@
     <Compile Include="ItemCatalogEdgeBarController.Designer.cs">
       <DependentUpon>ItemCatalogEdgeBarController.cs</DependentUpon>
     </Compile>
-    <Compile Include="PartsLibrary.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PartsLibrary.Designer.cs">
-      <DependentUpon>PartsLibrary.cs</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -83,8 +82,9 @@
     <EmbeddedResource Include="ItemCatalogEdgeBarController.resx">
       <DependentUpon>ItemCatalogEdgeBarController.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PartsLibrary.resx">
-      <DependentUpon>PartsLibrary.cs</DependentUpon>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
