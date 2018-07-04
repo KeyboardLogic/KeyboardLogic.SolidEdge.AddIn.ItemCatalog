@@ -25,20 +25,20 @@
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemCatalogEdgeBarController));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.partLibrary = new System.Windows.Forms.ListView();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.currentDirectory = new System.Windows.Forms.ToolStripTextBox();
+            this.backButton = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.partPreview = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.partPreview)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer1
@@ -50,7 +50,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.listView1);
+            this.splitContainer1.Panel1.Controls.Add(this.partLibrary);
             this.splitContainer1.Panel1.Controls.Add(this.toolStrip1);
             // 
             // splitContainer1.Panel2
@@ -60,76 +60,76 @@
             this.splitContainer1.SplitterDistance = 394;
             this.splitContainer1.TabIndex = 0;
             // 
-            // listView1
+            // partLibrary
             // 
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.HideSelection = false;
-            this.listView1.LabelWrap = false;
-            this.listView1.Location = new System.Drawing.Point(0, 25);
-            this.listView1.MultiSelect = false;
-            this.listView1.Name = "listView1";
-            this.listView1.RightToLeftLayout = true;
-            this.listView1.ShowGroups = false;
-            this.listView1.Size = new System.Drawing.Size(278, 369);
-            this.listView1.TabIndex = 1;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.List;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
-            this.listView1.DoubleClick += new System.EventHandler(this.listView1_DoubleClick);
+            this.partLibrary.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.partLibrary.HideSelection = false;
+            this.partLibrary.LabelWrap = false;
+            this.partLibrary.Location = new System.Drawing.Point(0, 25);
+            this.partLibrary.MultiSelect = false;
+            this.partLibrary.Name = "partLibrary";
+            this.partLibrary.RightToLeftLayout = true;
+            this.partLibrary.ShowGroups = false;
+            this.partLibrary.Size = new System.Drawing.Size(278, 369);
+            this.partLibrary.TabIndex = 1;
+            this.partLibrary.UseCompatibleStateImageBehavior = false;
+            this.partLibrary.View = System.Windows.Forms.View.List;
+            this.partLibrary.SelectedIndexChanged += new System.EventHandler(this.partLibrary_SelectedIndexChanged);
+            this.partLibrary.DoubleClick += new System.EventHandler(this.partLibrary_DoubleClick);
             // 
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1,
-            this.toolStripTextBox1});
+            this.toolStripLabel1,
+            this.currentDirectory,
+            this.backButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(278, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
+            // toolStripLabel1
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.toolStripLabel1.Enabled = false;
+            this.toolStripLabel1.Name = "toolStripLabel1";
+            this.toolStripLabel1.Size = new System.Drawing.Size(34, 22);
+            this.toolStripLabel1.Text = "Path:";
             // 
-            // toolStripTextBox1
+            // currentDirectory
             // 
-            this.toolStripTextBox1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.FileSystemDirectories;
-            this.toolStripTextBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 25);
+            this.currentDirectory.Enabled = false;
+            this.currentDirectory.Name = "currentDirectory";
+            this.currentDirectory.Size = new System.Drawing.Size(175, 25);
+            this.currentDirectory.TextChanged += new System.EventHandler(this.currentDirectory_TextChanged);
+            // 
+            // backButton
+            // 
+            this.backButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.backButton.Image = ((System.Drawing.Image)(resources.GetObject("backButton.Image")));
+            this.backButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.backButton.Name = "backButton";
+            this.backButton.Size = new System.Drawing.Size(36, 22);
+            this.backButton.Text = "Back";
+            this.backButton.Click += new System.EventHandler(this.backButton_Click);
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Controls.Add(this.richTextBox1);
+            this.panel1.Controls.Add(this.partPreview);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(278, 232);
             this.panel1.TabIndex = 0;
             // 
-            // pictureBox1
+            // partPreview
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(3, 62);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(272, 156);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(278, 56);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.partPreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.partPreview.Location = new System.Drawing.Point(0, 0);
+            this.partPreview.Name = "partPreview";
+            this.partPreview.Size = new System.Drawing.Size(278, 232);
+            this.partPreview.TabIndex = 1;
+            this.partPreview.TabStop = false;
             // 
             // ItemCatalogEdgeBarController
             // 
@@ -149,7 +149,7 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.partPreview)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -159,10 +159,10 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.RichTextBox richTextBox1;
-        private System.Windows.Forms.ToolStripComboBox toolStripTextBox1;
-        private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ListView partLibrary;
+        private System.Windows.Forms.PictureBox partPreview;
+        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripTextBox currentDirectory;
+        private System.Windows.Forms.ToolStripButton backButton;
     }
 }

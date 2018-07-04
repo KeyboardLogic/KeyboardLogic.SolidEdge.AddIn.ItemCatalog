@@ -25,8 +25,8 @@
         private void InitializeComponent() {
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.filePath = new System.Windows.Forms.TextBox();
+            this.properties = new System.Windows.Forms.ListView();
             this.Key = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Value = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
@@ -51,24 +51,25 @@
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
-            // textBox1
+            // filePath
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(430, 20);
-            this.textBox1.TabIndex = 2;
+            this.filePath.Enabled = false;
+            this.filePath.Location = new System.Drawing.Point(12, 12);
+            this.filePath.Name = "filePath";
+            this.filePath.Size = new System.Drawing.Size(430, 20);
+            this.filePath.TabIndex = 2;
             // 
-            // listView1
+            // properties
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.properties.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Key,
             this.Value});
-            this.listView1.Location = new System.Drawing.Point(12, 38);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(430, 400);
-            this.listView1.TabIndex = 4;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.properties.Location = new System.Drawing.Point(12, 38);
+            this.properties.Name = "properties";
+            this.properties.Size = new System.Drawing.Size(430, 400);
+            this.properties.TabIndex = 4;
+            this.properties.UseCompatibleStateImageBehavior = false;
+            this.properties.View = System.Windows.Forms.View.Details;
             // 
             // Key
             // 
@@ -86,8 +87,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(454, 580);
-            this.Controls.Add(this.listView1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.properties);
+            this.Controls.Add(this.filePath);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);
             this.Name = "ConfigurationDialog";
@@ -101,8 +102,8 @@
 
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.TextBox filePath;
+        private System.Windows.Forms.ListView properties;
         private System.Windows.Forms.ColumnHeader Key;
         private System.Windows.Forms.ColumnHeader Value;
     }
