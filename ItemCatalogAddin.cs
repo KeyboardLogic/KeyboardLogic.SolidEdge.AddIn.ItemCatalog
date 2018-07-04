@@ -38,7 +38,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             // As an alternative, you can call DemoAddIn.Instance.EdgeBarController.Add() in some other event if you need.
             // Get the document type of the passed in document.
             var documentType = document.Type;
-            var imageId = 3;
+            var imageId = 0;
             // Depending on the document type, you may have different edgebar controls.
             switch (documentType) {
                 case DocumentTypeConstants.igAssemblyDocument:

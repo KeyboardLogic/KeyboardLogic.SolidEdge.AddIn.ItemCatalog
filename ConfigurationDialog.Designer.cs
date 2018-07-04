@@ -27,14 +27,15 @@
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.partProperties = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.partPropertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.unitsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.partPropertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             ((System.ComponentModel.ISupportInitialize)(this.partProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.partPropertyBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -43,7 +44,6 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.partPropertyBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // okButton
@@ -98,6 +98,33 @@
             this.partProperties.Size = new System.Drawing.Size(296, 256);
             this.partProperties.TabIndex = 5;
             // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.nameDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // valueDataGridViewTextBoxColumn
+            // 
+            this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
+            this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
+            this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
+            this.valueDataGridViewTextBoxColumn.Width = 59;
+            // 
+            // unitsDataGridViewTextBoxColumn
+            // 
+            this.unitsDataGridViewTextBoxColumn.DataPropertyName = "Units";
+            this.unitsDataGridViewTextBoxColumn.HeaderText = "Units";
+            this.unitsDataGridViewTextBoxColumn.Name = "unitsDataGridViewTextBoxColumn";
+            this.unitsDataGridViewTextBoxColumn.ReadOnly = true;
+            this.unitsDataGridViewTextBoxColumn.Width = 56;
+            // 
+            // partPropertyBindingSource
+            // 
+            this.partPropertyBindingSource.DataSource = typeof(KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty);
+            // 
             // dataGridViewTextBoxColumn1
             // 
             this.dataGridViewTextBoxColumn1.DataPropertyName = "AttributeSets";
@@ -145,33 +172,6 @@
             this.splitContainer2.SplitterDistance = 73;
             this.splitContainer2.TabIndex = 2;
             // 
-            // partPropertyBindingSource
-            // 
-            this.partPropertyBindingSource.DataSource = typeof(KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty);
-            // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
-            this.nameDataGridViewTextBoxColumn.Width = 60;
-            // 
-            // valueDataGridViewTextBoxColumn
-            // 
-            this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
-            this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
-            this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
-            this.valueDataGridViewTextBoxColumn.Width = 59;
-            // 
-            // unitsDataGridViewTextBoxColumn
-            // 
-            this.unitsDataGridViewTextBoxColumn.DataPropertyName = "Units";
-            this.unitsDataGridViewTextBoxColumn.HeaderText = "Units";
-            this.unitsDataGridViewTextBoxColumn.Name = "unitsDataGridViewTextBoxColumn";
-            this.unitsDataGridViewTextBoxColumn.ReadOnly = true;
-            this.unitsDataGridViewTextBoxColumn.Width = 56;
-            // 
             // ConfigurationDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -181,6 +181,7 @@
             this.Name = "ConfigurationDialog";
             this.Text = "ConfigurationDialog";
             ((System.ComponentModel.ISupportInitialize)(this.partProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.partPropertyBindingSource)).EndInit();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -189,7 +190,6 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.partPropertyBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }

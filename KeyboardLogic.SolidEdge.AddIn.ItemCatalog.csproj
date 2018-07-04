@@ -94,6 +94,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Properties\Logo-180x180.bmp" />
+    <Content Include="Resources\AssemblyEdgeBar.png" />
+    <Content Include="Resources\Folder_16.png" />
+    <Content Include="Resources\Notepad_32x32.png" />
+    <None Include="Resources\Favorites_32.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\SolidEdge.Community.AddIn.110.0.0\build\net40\SolidEdge.Community.AddIn.targets" Condition="Exists('packages\SolidEdge.Community.AddIn.110.0.0\build\net40\SolidEdge.Community.AddIn.targets')" />

@@ -65,7 +65,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             }
             fileName = string.Join("", fileName.Split(Path.GetInvalidFileNameChars()));
             string fullPathName = this.assemblyDocument.Path + "\\" + this.originalFileName + fileName + ".par";
-            MessageBox.Show(fullPathName);
             this.partDocument.SaveCopyAs(fullPathName);
             this.partDocument.Close(false);
             this.application.DoIdle();

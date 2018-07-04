@@ -27,13 +27,13 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemCatalogEdgeBarController));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.partLibrary = new System.Windows.Forms.ListView();
+            this.partLibraryImageList = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.currentDirectory = new System.Windows.Forms.ToolStripTextBox();
             this.backButton = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.partPreview = new System.Windows.Forms.PictureBox();
-            this.partLibraryImageList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -80,6 +80,13 @@
             this.partLibrary.View = System.Windows.Forms.View.List;
             this.partLibrary.SelectedIndexChanged += new System.EventHandler(this.partLibrary_SelectedIndexChanged);
             this.partLibrary.DoubleClick += new System.EventHandler(this.partLibrary_DoubleClick);
+            // 
+            // partLibraryImageList
+            // 
+            this.partLibraryImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("partLibraryImageList.ImageStream")));
+            this.partLibraryImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.partLibraryImageList.Images.SetKeyName(0, "Folder_16.png");
+            this.partLibraryImageList.Images.SetKeyName(1, "Notepad_32x32.png");
             // 
             // toolStrip1
             // 
@@ -135,17 +142,11 @@
             this.partPreview.TabIndex = 1;
             this.partPreview.TabStop = false;
             // 
-            // partLibraryImageList
-            // 
-            this.partLibraryImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("partLibraryImageList.ImageStream")));
-            this.partLibraryImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.partLibraryImageList.Images.SetKeyName(0, "Folder_16.png");
-            this.partLibraryImageList.Images.SetKeyName(1, "Notepad_32x32.png");
-            // 
             // ItemCatalogEdgeBarController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::KeyboardLogic.SolidEdge.AddIn.ItemCatalog.Properties.Resources.Favorites_32;
             this.Controls.Add(this.splitContainer1);
             this.Name = "ItemCatalogEdgeBarController";
             this.Size = new System.Drawing.Size(278, 630);
