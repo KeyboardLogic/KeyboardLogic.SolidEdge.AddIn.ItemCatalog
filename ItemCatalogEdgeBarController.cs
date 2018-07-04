@@ -13,6 +13,7 @@ using System.IO;
 
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     public partial class ItemCatalogEdgeBarController : EdgeBarControl {
+        private string rootFolderPath = "Y:\\Google Drive\\Customers\\Innovated Solutions\\01 Profile 8";
         public ItemCatalogEdgeBarController() {
             InitializeComponent();
         }
@@ -25,7 +26,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         private void controllerAfterInitialize(object sender, EventArgs e) {
             // These properties are not initialized until AfterInitialize is called.
             var application = this.Document.Application;
-            this.currentDirectory.Text = "Y:\\Google Drive\\Customers\\Innovated Solutions\\01 Profile 8";
+            this.currentDirectory.Text = this.rootFolderPath;
         }
 
         private void partLibrary_SelectedIndexChanged(object sender, EventArgs e) {
@@ -54,29 +55,19 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void backButton_Click(object sender, EventArgs e) {
-            FolderBrowserDialog folderBrowserDialog1 = new FolderBrowserDialog();
-            // Set the help text description for the FolderBrowserDialog.
-            folderBrowserDialog1.Description = "Select the directory that you want to use as the default.";
-            // Do not allow the user to create new files via the FolderBrowserDialog.
-            folderBrowserDialog1.ShowNewFolderButton = false;
-            // Default to the My Documents folder.
-            folderBrowserDialog1.RootFolder = Environment.SpecialFolder.MyComputer;
-            // Show the FolderBrowserDialog.
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {
-                this.currentDirectory.Text = folderBrowserDialog1.SelectedPath;
-            }
+            this.currentDirectory.Text = this.currentDirectory.Text.Substring(0,this.currentDirectory.Text.LastIndexOf("\\"));
         }
 
         private void currentDirectory_TextChanged(object sender, EventArgs e) {
-            if (this.currentDirectory.Text == null) {
-                this.currentDirectory.Text = "C:\\";
+            if (this.currentDirectory.Text == null || !this.currentDirectory.Text.Contains(this.rootFolderPath)) {
+                this.currentDirectory.Text = this.rootFolderPath;
             } else {
                 this.partLibrary.Items.Clear();
                 foreach (string str in Directory.GetDirectories(this.currentDirectory.Text)) {
-                    this.partLibrary.Items.Add(Path.GetFileName(str));
+                    this.partLibrary.Items.Add(Path.GetFileName(str), 0);
                 }
-                foreach (string str in Directory.GetFiles(this.currentDirectory.Text)) {
-                    this.partLibrary.Items.Add(Path.GetFileName(str));
+                foreach (string str in Directory.GetFiles(this.currentDirectory.Text, "*.par")) {
+                    this.partLibrary.Items.Add(Path.GetFileName(str), 1);
                 }
             }
         }
