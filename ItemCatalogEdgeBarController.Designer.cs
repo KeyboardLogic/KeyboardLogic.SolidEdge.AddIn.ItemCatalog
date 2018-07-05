@@ -146,7 +146,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackgroundImage = global::KeyboardLogic.SolidEdge.AddIn.ItemCatalog.Properties.Resources.Favorites_32;
             this.Controls.Add(this.splitContainer1);
             this.Name = "ItemCatalogEdgeBarController";
             this.Size = new System.Drawing.Size(278, 630);

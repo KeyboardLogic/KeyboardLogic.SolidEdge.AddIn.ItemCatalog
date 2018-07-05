@@ -75,6 +75,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 
         private void cancelButton_Click(object sender, EventArgs e) {
             this.partDocument.Close(false);
+            this.application.DoIdle();
             this.DialogResult = DialogResult.Cancel;
             Close();
         }

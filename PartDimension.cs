@@ -2,45 +2,32 @@
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     class PartDimension : PartProperty{
         private SolidEdgeFrameworkSupport.Dimension dimension;
-        private SolidEdgeFramework.UnitsOfMeasure unitesOfMeasure;
 
         public PartDimension(SolidEdgeFrameworkSupport.Dimension dimension, SolidEdgeFramework.UnitsOfMeasure unitesOfMeasure) {
             this.dimension = dimension;
             this.unitesOfMeasure = unitesOfMeasure;
         }
 
-        public string Name {
+        public override string Name {
             get { return this.dimension.DisplayName; }
         }
 
-        public double Value {
+        public override double Value {
             get {
-                string result = unitesOfMeasure.FormatUnit(dimension.UnitsType, dimension.Value).ToString();
-                string[] strArray = result.Split(' ');
-                if (strArray.Length == 2 && strArray[0] != "") {
-                    result = strArray[0];
-                }
-                return double.Parse(result);
+                return this.getValueofCurrentMeasure(dimension.UnitsType, dimension.Value);
             }
             set {
                 this.dimension.Value = (double)unitesOfMeasure.ParseUnit(dimension.UnitsType, value.ToString());
             }
         }
 
-        public string Units {
+        public override string Units {
             get {
-                string result = unitesOfMeasure.FormatUnit(dimension.UnitsType, dimension.Value).ToString();
-                string[] strArray = result.Split(' ');
-                if (strArray.Length == 2 && strArray[0] != "") {
-                    result = strArray[1];
-                } else {
-                    result = "";
-                }
-                return result;
+                return this.getUnitsOfCurrentMeasure(dimension.UnitsType, dimension.Value);
             }
         }
 
-        public bool displayForConfiguration() {
+        public override bool displayForConfiguration() {
             return !(this.dimension.Constraint || this.dimension.IsReadOnly);
         }
     }

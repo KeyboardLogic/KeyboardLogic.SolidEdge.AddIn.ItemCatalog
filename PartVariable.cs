@@ -2,45 +2,32 @@
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     class PartVariable : PartProperty {
         private SolidEdgeFramework.variable variable;
-        private SolidEdgeFramework.UnitsOfMeasure unitesOfMeasure;
-
+        
         public PartVariable(SolidEdgeFramework.variable variable, SolidEdgeFramework.UnitsOfMeasure unitesOfMeasure) {
             this.variable = variable;
             this.unitesOfMeasure = unitesOfMeasure;
         }
 
-        public string Name {
+        public override string Name {
             get { return this.variable.DisplayName; }
         }
 
-        public double Value {
+        public override double Value {
             get {
-                string result = unitesOfMeasure.FormatUnit(variable.UnitsType, variable.Value).ToString();
-                string[] strArray = result.Split(' ');
-                if (strArray.Length == 2 && strArray[0] != "") {
-                    result = strArray[0];
-                }
-                return double.Parse(result);
+                return this.getValueofCurrentMeasure(variable.UnitsType, variable.Value);
             }
             set {
                 this.variable.Value = (double)unitesOfMeasure.ParseUnit(variable.UnitsType, value.ToString());
             }
         }
 
-        public string Units {
+        public override string Units {
             get {
-                string result = unitesOfMeasure.FormatUnit(variable.UnitsType, variable.Value).ToString();
-                string[] strArray = result.Split(' ');
-                if (strArray.Length == 2 && strArray[0] != "") {
-                    result = strArray[1];
-                } else {
-                    result = "";
-                }
-                return result;
+                return this.getUnitsOfCurrentMeasure(variable.UnitsType, variable.Value);
             }
         }
 
-        public bool displayForConfiguration() {
+        public override bool displayForConfiguration() {
             return !this.variable.IsReadOnly;
         }
     }
