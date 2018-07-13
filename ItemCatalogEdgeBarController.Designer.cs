@@ -25,7 +25,7 @@
         private void InitializeComponent() {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ItemCatalogEdgeBarController));
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.edgeBar = new System.Windows.Forms.SplitContainer();
             this.partLibrary = new System.Windows.Forms.ListView();
             this.partLibraryImageList = new System.Windows.Forms.ImageList(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -33,37 +33,50 @@
             this.currentDirectory = new System.Windows.Forms.ToolStripTextBox();
             this.backButton = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.partPreview = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            this.configurationContainer = new System.Windows.Forms.SplitContainer();
+            this.partProperties = new System.Windows.Forms.DataGridView();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.unitsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.partPropertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.okButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.edgeBar)).BeginInit();
+            this.edgeBar.Panel1.SuspendLayout();
+            this.edgeBar.Panel2.SuspendLayout();
+            this.edgeBar.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.partPreview)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.configurationContainer)).BeginInit();
+            this.configurationContainer.Panel1.SuspendLayout();
+            this.configurationContainer.Panel2.SuspendLayout();
+            this.configurationContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.partProperties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.partPropertyBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
-            // splitContainer1
+            // edgeBar
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.edgeBar.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.edgeBar.Location = new System.Drawing.Point(0, 0);
+            this.edgeBar.Name = "edgeBar";
+            this.edgeBar.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer1.Panel1
+            // edgeBar.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.partLibrary);
-            this.splitContainer1.Panel1.Controls.Add(this.toolStrip1);
+            this.edgeBar.Panel1.Controls.Add(this.partLibrary);
+            this.edgeBar.Panel1.Controls.Add(this.toolStrip1);
             // 
-            // splitContainer1.Panel2
+            // edgeBar.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.panel1);
-            this.splitContainer1.Size = new System.Drawing.Size(278, 630);
-            this.splitContainer1.SplitterDistance = 394;
-            this.splitContainer1.TabIndex = 0;
+            this.edgeBar.Panel2.Controls.Add(this.panel1);
+            this.edgeBar.Size = new System.Drawing.Size(278, 630);
+            this.edgeBar.SplitterDistance = 350;
+            this.edgeBar.TabIndex = 0;
             // 
             // partLibrary
             // 
+            this.partLibrary.AllowDrop = true;
             this.partLibrary.Dock = System.Windows.Forms.DockStyle.Fill;
             this.partLibrary.HideSelection = false;
             this.partLibrary.LabelWrap = false;
@@ -73,7 +86,7 @@
             this.partLibrary.Name = "partLibrary";
             this.partLibrary.RightToLeftLayout = true;
             this.partLibrary.ShowGroups = false;
-            this.partLibrary.Size = new System.Drawing.Size(278, 369);
+            this.partLibrary.Size = new System.Drawing.Size(278, 325);
             this.partLibrary.SmallImageList = this.partLibraryImageList;
             this.partLibrary.TabIndex = 1;
             this.partLibrary.UseCompatibleStateImageBehavior = false;
@@ -86,7 +99,6 @@
             this.partLibraryImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("partLibraryImageList.ImageStream")));
             this.partLibraryImageList.TransparentColor = System.Drawing.Color.Transparent;
             this.partLibraryImageList.Images.SetKeyName(0, "Folder_16.png");
-            this.partLibraryImageList.Images.SetKeyName(1, "Notepad_32x32.png");
             // 
             // toolStrip1
             // 
@@ -126,55 +138,149 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.partPreview);
+            this.panel1.Controls.Add(this.configurationContainer);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(278, 232);
+            this.panel1.Size = new System.Drawing.Size(278, 276);
             this.panel1.TabIndex = 0;
             // 
-            // partPreview
+            // configurationContainer
             // 
-            this.partPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.partPreview.Location = new System.Drawing.Point(0, 0);
-            this.partPreview.Name = "partPreview";
-            this.partPreview.Size = new System.Drawing.Size(278, 232);
-            this.partPreview.TabIndex = 1;
-            this.partPreview.TabStop = false;
+            this.configurationContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.configurationContainer.Location = new System.Drawing.Point(0, 0);
+            this.configurationContainer.Name = "configurationContainer";
+            this.configurationContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // configurationContainer.Panel1
+            // 
+            this.configurationContainer.Panel1.Controls.Add(this.partProperties);
+            // 
+            // configurationContainer.Panel2
+            // 
+            this.configurationContainer.Panel2.Controls.Add(this.cancelButton);
+            this.configurationContainer.Panel2.Controls.Add(this.okButton);
+            this.configurationContainer.Size = new System.Drawing.Size(278, 276);
+            this.configurationContainer.SplitterDistance = 235;
+            this.configurationContainer.TabIndex = 2;
+            // 
+            // partProperties
+            // 
+            this.partProperties.AllowUserToAddRows = false;
+            this.partProperties.AllowUserToDeleteRows = false;
+            this.partProperties.AutoGenerateColumns = false;
+            this.partProperties.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.partProperties.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.partProperties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.partProperties.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.nameDataGridViewTextBoxColumn,
+            this.valueDataGridViewTextBoxColumn,
+            this.unitsDataGridViewTextBoxColumn});
+            this.partProperties.DataSource = this.partPropertyBindingSource;
+            this.partProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.partProperties.GridColor = System.Drawing.SystemColors.Control;
+            this.partProperties.Location = new System.Drawing.Point(0, 0);
+            this.partProperties.Name = "partProperties";
+            this.partProperties.Size = new System.Drawing.Size(278, 235);
+            this.partProperties.TabIndex = 0;
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // valueDataGridViewTextBoxColumn
+            // 
+            this.valueDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
+            this.valueDataGridViewTextBoxColumn.FillWeight = 50F;
+            this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
+            this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
+            // 
+            // unitsDataGridViewTextBoxColumn
+            // 
+            this.unitsDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.unitsDataGridViewTextBoxColumn.DataPropertyName = "Units";
+            this.unitsDataGridViewTextBoxColumn.FillWeight = 50F;
+            this.unitsDataGridViewTextBoxColumn.HeaderText = "Units";
+            this.unitsDataGridViewTextBoxColumn.Name = "unitsDataGridViewTextBoxColumn";
+            this.unitsDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // partPropertyBindingSource
+            // 
+            this.partPropertyBindingSource.DataSource = typeof(KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.AutoSize = true;
+            this.cancelButton.Location = new System.Drawing.Point(84, 2);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 1;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
+            // okButton
+            // 
+            this.okButton.AutoSize = true;
+            this.okButton.Location = new System.Drawing.Point(3, 2);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.TabIndex = 0;
+            this.okButton.Text = "OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // ItemCatalogEdgeBarController
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.edgeBar);
             this.Name = "ItemCatalogEdgeBarController";
             this.Size = new System.Drawing.Size(278, 630);
             this.ToolTip = "Item Catalog";
             this.AfterInitialize += new System.EventHandler(this.controllerAfterInitialize);
             this.Load += new System.EventHandler(this.controllerLoad);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.edgeBar.Panel1.ResumeLayout(false);
+            this.edgeBar.Panel1.PerformLayout();
+            this.edgeBar.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.edgeBar)).EndInit();
+            this.edgeBar.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.partPreview)).EndInit();
+            this.configurationContainer.Panel1.ResumeLayout(false);
+            this.configurationContainer.Panel2.ResumeLayout(false);
+            this.configurationContainer.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.configurationContainer)).EndInit();
+            this.configurationContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.partProperties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.partPropertyBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.SplitContainer edgeBar;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ListView partLibrary;
-        private System.Windows.Forms.PictureBox partPreview;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox currentDirectory;
         private System.Windows.Forms.ToolStripButton backButton;
         private System.Windows.Forms.ImageList partLibraryImageList;
+        private System.Windows.Forms.SplitContainer configurationContainer;
+        private System.Windows.Forms.DataGridView partProperties;
+        private System.Windows.Forms.BindingSource partPropertyBindingSource;
+        private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn unitsDataGridViewTextBoxColumn;
     }
 }

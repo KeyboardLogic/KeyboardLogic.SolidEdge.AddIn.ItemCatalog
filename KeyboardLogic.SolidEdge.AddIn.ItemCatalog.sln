@@ -1,6 +1,7 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardLogic.SolidEdge.AddIn.ItemCatalog", "KeyboardLogic.SolidEdge.AddIn.ItemCatalog.csproj", "{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}"
 EndProject
 Global
@@ -13,5 +14,11 @@ Global
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2862A4A0-9B97-4E50-8AFA-3E670473E377}
 	EndGlobalSection
 EndGlobal
