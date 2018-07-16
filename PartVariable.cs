@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
+﻿namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     class PartVariable : PartProperty {
         private SolidEdgeFramework.variable variable;
         

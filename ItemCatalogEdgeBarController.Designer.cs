@@ -35,12 +35,12 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.configurationContainer = new System.Windows.Forms.SplitContainer();
             this.partProperties = new System.Windows.Forms.DataGridView();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.okButton = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.unitsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.partPropertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.okButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.edgeBar)).BeginInit();
             this.edgeBar.Panel1.SuspendLayout();
             this.edgeBar.Panel2.SuspendLayout();
@@ -91,6 +91,7 @@
             this.partLibrary.TabIndex = 1;
             this.partLibrary.UseCompatibleStateImageBehavior = false;
             this.partLibrary.View = System.Windows.Forms.View.List;
+            this.partLibrary.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.partLibrary_ItemDrag);
             this.partLibrary.SelectedIndexChanged += new System.EventHandler(this.partLibrary_SelectedIndexChanged);
             this.partLibrary.DoubleClick += new System.EventHandler(this.partLibrary_DoubleClick);
             // 
@@ -116,14 +117,15 @@
             // 
             this.toolStripLabel1.Enabled = false;
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(34, 22);
-            this.toolStripLabel1.Text = "Path:";
+            this.toolStripLabel1.Size = new System.Drawing.Size(43, 22);
+            this.toolStripLabel1.Text = "Folder:";
             // 
             // currentDirectory
             // 
             this.currentDirectory.Enabled = false;
             this.currentDirectory.Name = "currentDirectory";
-            this.currentDirectory.Size = new System.Drawing.Size(175, 25);
+            this.currentDirectory.ReadOnly = true;
+            this.currentDirectory.Size = new System.Drawing.Size(125, 25);
             this.currentDirectory.TextChanged += new System.EventHandler(this.currentDirectory_TextChanged);
             // 
             // backButton
@@ -168,6 +170,8 @@
             // 
             this.partProperties.AllowUserToAddRows = false;
             this.partProperties.AllowUserToDeleteRows = false;
+            this.partProperties.AllowUserToResizeColumns = false;
+            this.partProperties.AllowUserToResizeRows = false;
             this.partProperties.AutoGenerateColumns = false;
             this.partProperties.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.partProperties.BackgroundColor = System.Drawing.SystemColors.Control;
@@ -181,8 +185,34 @@
             this.partProperties.GridColor = System.Drawing.SystemColors.Control;
             this.partProperties.Location = new System.Drawing.Point(0, 0);
             this.partProperties.Name = "partProperties";
+            this.partProperties.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.partProperties.ShowCellErrors = false;
+            this.partProperties.ShowEditingIcon = false;
+            this.partProperties.ShowRowErrors = false;
             this.partProperties.Size = new System.Drawing.Size(278, 235);
             this.partProperties.TabIndex = 0;
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.AutoSize = true;
+            this.cancelButton.Location = new System.Drawing.Point(84, 2);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 1;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            // 
+            // okButton
+            // 
+            this.okButton.AutoSize = true;
+            this.okButton.Location = new System.Drawing.Point(3, 2);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.TabIndex = 0;
+            this.okButton.Text = "OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // nameDataGridViewTextBoxColumn
             // 
@@ -212,28 +242,6 @@
             // partPropertyBindingSource
             // 
             this.partPropertyBindingSource.DataSource = typeof(KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty);
-            // 
-            // cancelButton
-            // 
-            this.cancelButton.AutoSize = true;
-            this.cancelButton.Location = new System.Drawing.Point(84, 2);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelButton.TabIndex = 1;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
-            // 
-            // okButton
-            // 
-            this.okButton.AutoSize = true;
-            this.okButton.Location = new System.Drawing.Point(3, 2);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 23);
-            this.okButton.TabIndex = 0;
-            this.okButton.Text = "OK";
-            this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // ItemCatalogEdgeBarController
             // 
@@ -269,7 +277,6 @@
         private System.Windows.Forms.SplitContainer edgeBar;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ListView partLibrary;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripTextBox currentDirectory;
         private System.Windows.Forms.ToolStripButton backButton;
@@ -282,5 +289,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn unitsDataGridViewTextBoxColumn;
+        protected System.Windows.Forms.ListView partLibrary;
     }
 }
