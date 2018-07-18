@@ -7,8 +7,8 @@ using SolidEdgeFramework;
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 	
 	[ComVisible(true)]
-	[Guid("B440CD64-4926-446A-AA6E-A5115E21F43D")] // Must be unique!
-	[ProgId("KeyboardLogic.SolidEdge.AddIn.ItemCatalog")] // Must be unique!
+	//[Guid("B440CD64-4926-446A-AA6E-A5115E21F43D")] // Must be unique!
+	//[ProgId("KeyboardLogic.SolidEdge.AddIn.ItemCatalog")] // Must be unique!
 	public class ItemCatalogAddIn : SolidEdgeAddIn {
         /// <summary>
         /// Called when the addin is first loaded by Solid Edge.
@@ -66,7 +66,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             // List of environments that your addin supports.
             Guid[] environments = {
                 SolidEdgeSDK.EnvironmentCategories.Application,
-                SolidEdgeSDK.EnvironmentCategories.AllDocumentEnvrionments
+                SolidEdgeSDK.EnvironmentCategories.Assembly
             };
 
             try {

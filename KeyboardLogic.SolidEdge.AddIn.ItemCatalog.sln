@@ -4,7 +4,7 @@ VisualStudioVersion = 15.0.27703.2035
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeyboardLogic.SolidEdge.AddIn.ItemCatalog", "KeyboardLogic.SolidEdge.AddIn.ItemCatalog.csproj", "{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{B92FA18C-12BD-4FCB-8C9D-47808BC3E418}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{18C3211E-244E-4D7B-B28C-595BFC9B9F38}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +16,10 @@ Global
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B92FA18C-12BD-4FCB-8C9D-47808BC3E418}.Debug|Any CPU.ActiveCfg = Debug
-		{B92FA18C-12BD-4FCB-8C9D-47808BC3E418}.Debug|Any CPU.Build.0 = Debug
-		{B92FA18C-12BD-4FCB-8C9D-47808BC3E418}.Release|Any CPU.ActiveCfg = Release
-		{B92FA18C-12BD-4FCB-8C9D-47808BC3E418}.Release|Any CPU.Build.0 = Release
+		{18C3211E-244E-4D7B-B28C-595BFC9B9F38}.Debug|Any CPU.ActiveCfg = Debug
+		{18C3211E-244E-4D7B-B28C-595BFC9B9F38}.Debug|Any CPU.Build.0 = Debug
+		{18C3211E-244E-4D7B-B28C-595BFC9B9F38}.Release|Any CPU.ActiveCfg = Release
+		{18C3211E-244E-4D7B-B28C-595BFC9B9F38}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

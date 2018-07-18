@@ -537,7 +537,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ItemCatalog"
         "ProductCode" = "8:{7893F713-D991-4DA2-9942-25C4461944D8}"
-        "PackageCode" = "8:{6AE5BBFC-3511-4F97-BC2B-497088486A3E}"
+        "PackageCode" = "8:{1191682A-2C83-4ABA-8E26-9FA682F386F2}"
         "UpgradeCode" = "8:{E4B3576A-F039-4BFB-B816-7497B4C2D848}"
         "AspNetVersion" = "8:"
         "RestartWWWService" = "11:FALSE"
