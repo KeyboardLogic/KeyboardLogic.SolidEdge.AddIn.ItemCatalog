@@ -1,4 +1,5 @@
-﻿using SolidEdgeCommunity.AddIn;
+﻿using System.Runtime.InteropServices;
+using SolidEdgeCommunity.AddIn;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -26,3 +27,5 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 [assembly: NativeResource(1, @"Resources\EdgeBar-Icon.png")]
+[assembly: Guid("8F9BDCE5-37B7-4E93-B9BF-F92A6E94838C")]
+

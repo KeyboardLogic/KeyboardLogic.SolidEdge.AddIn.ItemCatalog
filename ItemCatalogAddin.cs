@@ -7,8 +7,8 @@ using SolidEdgeFramework;
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 	
 	[ComVisible(true)]
-	//[Guid("B440CD64-4926-446A-AA6E-A5115E21F43D")] // Must be unique!
-	//[ProgId("KeyboardLogic.SolidEdge.AddIn.ItemCatalog")] // Must be unique!
+	[Guid("B440CD64-4926-446A-AA6E-A5115E21F43D")] // Must be unique!
+	[ProgId("KeyboardLogic.SolidEdge.AddIn.ItemCatalog")] // Must be unique!
 	public class ItemCatalogAddIn : SolidEdgeAddIn {
         /// <summary>
         /// Called when the addin is first loaded by Solid Edge.
@@ -59,6 +59,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// </summary>
         [ComRegisterFunction]
         public static void OnRegister(Type t) {
+            MessageBox.Show("OnRegister");
             string title = "AddIn ItemCatalog";
             string summary = "Solid Edge Item Catalog Addin in .NET 4.0.";
             var enabled = true; // You have the option to register the addin in a disabled state.
@@ -81,6 +82,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// </summary>
         [ComUnregisterFunction]
         public static void OnUnregister(Type t) {
+            MessageBox.Show("OnUnregister");
             Unregister(t);
         }
     }

@@ -8,14 +8,19 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		All|Any CPU = All|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.All|Any CPU.ActiveCfg = Release|Any CPU
+		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.All|Any CPU.Build.0 = Release|Any CPU
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E0EBEC7-0191-4EBC-8EEE-FF3824E5D447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18C3211E-244E-4D7B-B28C-595BFC9B9F38}.All|Any CPU.ActiveCfg = Release
+		{18C3211E-244E-4D7B-B28C-595BFC9B9F38}.All|Any CPU.Build.0 = Release
 		{18C3211E-244E-4D7B-B28C-595BFC9B9F38}.Debug|Any CPU.ActiveCfg = Debug
 		{18C3211E-244E-4D7B-B28C-595BFC9B9F38}.Debug|Any CPU.Build.0 = Debug
 		{18C3211E-244E-4D7B-B28C-595BFC9B9F38}.Release|Any CPU.ActiveCfg = Release
