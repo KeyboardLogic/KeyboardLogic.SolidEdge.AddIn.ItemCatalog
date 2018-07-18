@@ -66,7 +66,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             // List of environments that your addin supports.
             Guid[] environments = {
                 SolidEdgeSDK.EnvironmentCategories.Application,
-                SolidEdgeSDK.EnvironmentCategories.Assembly
+                SolidEdgeSDK.EnvironmentCategories.AllDocumentEnvrionments
             };
 
             try {

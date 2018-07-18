@@ -186,12 +186,9 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                             // partProperty = new PartVariable(variable, unitesOfMeasure);
                             // break;
                     }
-                    if (partProperty != null && settings[partProperty.Name] != null) {
+                    if (partProperty != null && settings[partProperty.Name] != null && partProperty.displayForConfiguration()) {
                         this.partPropertyBindingSource.Add(partProperty);
                     }
-                    // if (partProperty != null && partProperty.displayForConfiguration()) {
-                        // this.partPropertyBindingSource.Add(partProperty);
-                    // }
                 }
             } catch (Exception ex) {
                 System.Diagnostics.Debug.WriteLine("showConfigurationContainer: " + ex.Message);
