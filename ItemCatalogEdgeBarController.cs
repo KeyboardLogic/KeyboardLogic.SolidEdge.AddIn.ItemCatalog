@@ -81,6 +81,10 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     this.currentPath += "\\" + item.Text;
                     this.currentDirectory.Text = item.Text;
                     this.UpdateDirectories();
+                } else if (item.Text != null && File.Exists(this.currentPath + "\\" + item.Text)) {
+                    this.ShowConfigurationContainer(this.currentPath + "\\" + item.Text);
+                    this.partProperties.Focus();
+                    this.partProperties.BeginEdit(true);
                 }
             }
         }
@@ -200,10 +204,10 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                         this.partPropertyBindingSource.Add(partProperty);
                     }
                 }
+                this.edgeBar.Panel2Collapsed = false;
             } catch (Exception ex) {
-                log.Info("showConfigurationContainer: " + ex.Message);
+                log.Error(ex.Message);
             }
-            this.edgeBar.Panel2Collapsed = false;
         }
 
         private void PartLibrary_ItemDrag(object sender, ItemDragEventArgs e) {
@@ -217,6 +221,14 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     assemblyDocument.Activate();
                 }
             }
+        }
+
+        private void partProperties_Enter(object sender, EventArgs e) {
+            log.Info("Configure the part");
+        }
+
+        private void partProperties_CurrentCellChanged(object sender, EventArgs e) {
+            // log.Info("Current Cell: " + this.partProperties.CurrentCell);
         }
     }
 }
