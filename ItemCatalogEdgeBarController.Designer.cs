@@ -91,9 +91,9 @@
             this.partLibrary.TabIndex = 1;
             this.partLibrary.UseCompatibleStateImageBehavior = false;
             this.partLibrary.View = System.Windows.Forms.View.List;
-            this.partLibrary.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.partLibrary_ItemDrag);
-            this.partLibrary.SelectedIndexChanged += new System.EventHandler(this.partLibrary_SelectedIndexChanged);
-            this.partLibrary.DoubleClick += new System.EventHandler(this.partLibrary_DoubleClick);
+            this.partLibrary.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.PartLibrary_ItemDrag);
+            this.partLibrary.SelectedIndexChanged += new System.EventHandler(this.PartLibrary_SelectedIndexChanged);
+            this.partLibrary.DoubleClick += new System.EventHandler(this.PartLibrary_DoubleClick);
             // 
             // partLibraryImageList
             // 
@@ -126,7 +126,7 @@
             this.currentDirectory.Name = "currentDirectory";
             this.currentDirectory.ReadOnly = true;
             this.currentDirectory.Size = new System.Drawing.Size(125, 25);
-            this.currentDirectory.TextChanged += new System.EventHandler(this.currentDirectory_TextChanged);
+            this.currentDirectory.TextChanged += new System.EventHandler(this.CurrentDirectory_TextChanged);
             // 
             // backButton
             // 
@@ -136,7 +136,7 @@
             this.backButton.Name = "backButton";
             this.backButton.Size = new System.Drawing.Size(36, 22);
             this.backButton.Text = "Back";
-            this.backButton.Click += new System.EventHandler(this.backButton_Click);
+            this.backButton.Click += new System.EventHandler(this.BackButton_Click);
             // 
             // panel1
             // 
@@ -201,7 +201,7 @@
             this.cancelButton.TabIndex = 1;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // okButton
             // 
@@ -212,7 +212,7 @@
             this.okButton.TabIndex = 0;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            this.okButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // nameDataGridViewTextBoxColumn
             // 
@@ -251,8 +251,8 @@
             this.Name = "ItemCatalogEdgeBarController";
             this.Size = new System.Drawing.Size(278, 630);
             this.ToolTip = "Item Catalog";
-            this.AfterInitialize += new System.EventHandler(this.controllerAfterInitialize);
-            this.Load += new System.EventHandler(this.controllerLoad);
+            this.AfterInitialize += new System.EventHandler(this.ControllerAfterInitialize);
+            this.Load += new System.EventHandler(this.ControllerLoad);
             this.edgeBar.Panel1.ResumeLayout(false);
             this.edgeBar.Panel1.PerformLayout();
             this.edgeBar.Panel2.ResumeLayout(false);

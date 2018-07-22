@@ -3,13 +3,20 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using SolidEdgeCommunity.AddIn;
 using SolidEdgeFramework;
+using log4net;
+using System.Reflection;
 
+// Logging configuration
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
+//[assembly: log4net.Config.XmlConfigurator(ConfigFile = "Log4Net.config", Watch = true)]
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 	
 	[ComVisible(true)]
 	[Guid("B440CD64-4926-446A-AA6E-A5115E21F43D")] // Must be unique!
 	[ProgId("KeyboardLogic.SolidEdge.AddIn.ItemCatalog")] // Must be unique!
 	public class ItemCatalogAddIn : SolidEdgeAddIn {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Called when the addin is first loaded by Solid Edge.
         /// </summary>

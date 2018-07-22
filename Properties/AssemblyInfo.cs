@@ -2,6 +2,8 @@
 using SolidEdgeCommunity.AddIn;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using log4net;
+using log4net.Config;
 
 // Information about this assembly is defined by the following attributes. 
 // Change them to the values specific to your project.
@@ -28,4 +30,3 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyKeyFile("")]
 [assembly: NativeResource(1, @"Resources\EdgeBar-Icon.png")]
 [assembly: Guid("8F9BDCE5-37B7-4E93-B9BF-F92A6E94838C")]
-

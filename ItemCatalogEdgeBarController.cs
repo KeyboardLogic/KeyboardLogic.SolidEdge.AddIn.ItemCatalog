@@ -11,9 +11,12 @@ using System.Windows.Forms;
 using SolidEdgeCommunity.AddIn;
 using SolidEdgeCommunity.Extensions; // https://github.com/SolidEdgeCommunity/SolidEdge.Community/wiki/Using-Extension-Methods
 using System.IO;
+using log4net;
+using System.Reflection;
 
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     public partial class ItemCatalogEdgeBarController : EdgeBarControl {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private Configuration myDllConfig;
         private string rootFolderPath;
         private SolidEdgeFramework.Application application;
@@ -21,14 +24,15 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         private SolidEdgePart.PartDocument partDocument;
 
         public ItemCatalogEdgeBarController() {
+            log.Info("Item Catalog Loaded");
             //Open the configuration file using the dll location
             this.myDllConfig = ConfigurationManager.OpenExeConfiguration(this.GetType().Assembly.Location);
             KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["appSettings"]).Settings;
             if (settings.Count == 0) {
-                System.Diagnostics.Debug.WriteLine("AppSettings is empty.");
+                log.Info("AppSettings is empty.");
             } else {
                 foreach (string key in settings.AllKeys) {
-                    System.Diagnostics.Debug.WriteLine("Key: {0} Value: {1}", key, settings[key].Value);
+                    log.Info("Key: " + key + " Value: " + settings[key].Value);
                 }
             }
             // Set root folder for mother parts
@@ -37,12 +41,12 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             InitializeComponent();
         }
 
-        private void controllerLoad(object sender, EventArgs e) {
+        private void ControllerLoad(object sender, EventArgs e) {
             // Trick to use the default system font.
             this.Font = SystemFonts.MessageBoxFont;
         }
 
-        private void controllerAfterInitialize(object sender, EventArgs e) {
+        private void ControllerAfterInitialize(object sender, EventArgs e) {
             // These properties are not initialized until AfterInitialize is called.
             if (partLibraryImageList.Images.ContainsKey(".par") == false) {
                 Icon icon = IconTools.GetIconForFile("test.par", ShellIconSize.SmallIcon);
@@ -51,7 +55,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     partLibraryImageList.Images.SetKeyName(1, ".par");
                 }
             }
-            this.hideConfigurationContainer();
+            this.HideConfigurationContainer();
             // Register with OLE to handle concurrency issues on the current thread.
             SolidEdgeCommunity.OleMessageFilter.Register();
             // Connect to or start Solid Edge.
@@ -62,20 +66,20 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             this.currentDirectory.Text = this.rootFolderPath;
         }
 
-        private void partLibrary_SelectedIndexChanged(object sender, EventArgs e) {
-            System.Diagnostics.Debug.WriteLine("partLibrary_SelectedIndexChanged: Documents.Count: " + this.application.Documents.Count);
+        private void PartLibrary_SelectedIndexChanged(object sender, EventArgs e) {
+            log.Info("partLibrary_SelectedIndexChanged: Documents.Count: " + this.application.Documents.Count);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
                 if (item.Text != null && File.Exists(this.currentDirectory.Text + "\\" + item.Text)) { // Display preview of part
                     // TODO: display preview of selected part
-                    this.showConfigurationContainer(this.currentDirectory.Text + "\\" + item.Text);
+                    this.ShowConfigurationContainer(this.currentDirectory.Text + "\\" + item.Text);
                 } else {
-                    this.hideConfigurationContainer();
+                    this.HideConfigurationContainer();
                 }
             }
         }
 
-        private void partLibrary_DoubleClick(object sender, EventArgs e) {
-            System.Diagnostics.Debug.WriteLine("partLibrary_DoubleClick: Documents.Count: " + this.application.Documents.Count);
+        private void PartLibrary_DoubleClick(object sender, EventArgs e) {
+            log.Info("partLibrary_DoubleClick: Documents.Count: " + this.application.Documents.Count);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
                 if (item.Text != null && Directory.Exists(this.currentDirectory.Text + "\\" + item.Text)) {
                     this.currentDirectory.Text = this.currentDirectory.Text + "\\" + item.Text;
@@ -83,11 +87,11 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             }
         }
 
-        private void backButton_Click(object sender, EventArgs e) {
+        private void BackButton_Click(object sender, EventArgs e) {
             this.currentDirectory.Text = this.currentDirectory.Text.Substring(0,this.currentDirectory.Text.LastIndexOf("\\"));
         }
 
-        private void currentDirectory_TextChanged(object sender, EventArgs e) {
+        private void CurrentDirectory_TextChanged(object sender, EventArgs e) {
             if (this.currentDirectory.Text == null || !this.currentDirectory.Text.Contains(this.rootFolderPath)) {
                 this.currentDirectory.Text = this.rootFolderPath;
             } else {
@@ -101,7 +105,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             }
         }
 
-        private void okButton_Click(object sender, EventArgs e) {
+        private void OkButton_Click(object sender, EventArgs e) {
             KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["appSettings"]).Settings;
             // Handles naming convention when it is not followed
             int length = this.partDocument.Name.IndexOf(settings["fileNameToReplace"].Value);
@@ -116,16 +120,16 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             fileName = string.Join("", fileName.Split(Path.GetInvalidFileNameChars()));
             string fullPathName = this.assemblyDocument.Path + "\\" + fileName + ".par";
             this.partDocument.SaveCopyAs(fullPathName);
-            this.hideConfigurationContainer();
+            this.HideConfigurationContainer();
             this.assemblyDocument.Occurrences.AddWithTransform(fullPathName, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
             this.application.DoIdle();
         }
 
-        private void cancelButton_Click(object sender, EventArgs e) {
-            this.hideConfigurationContainer();
+        private void CancelButton_Click(object sender, EventArgs e) {
+            this.HideConfigurationContainer();
         }
 
-        private void clearPartDocument() {
+        private void ClearPartDocument() {
             this.partPropertyBindingSource.Clear();
             if (this.partDocument != null) {
                 this.partDocument.Close(false);
@@ -137,31 +141,31 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// <summary>
         /// Displays the configuration container used for changing values associated with part properties
         /// </summary>
-        private void hideConfigurationContainer() {
+        private void HideConfigurationContainer() {
             this.edgeBar.Panel2Collapsed = true;
-            this.clearPartDocument();
+            this.ClearPartDocument();
         }
 
         /// <summary>
         /// Displays the configuration container used for changing values associated with part properties
         /// </summary>
-        private void showConfigurationContainer(string filePath) {
+        private void ShowConfigurationContainer(string filePath) {
             try {
                 KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["variables"]).Settings;
                 if (settings.Count == 0) {
-                    System.Diagnostics.Debug.WriteLine("AppSettings is empty.");
+                    log.Info("AppSettings is empty.");
                 } else {
                     foreach (string key in settings.AllKeys) {
-                        System.Diagnostics.Debug.WriteLine("Key: {0} Value: {1}", key, settings[key].Value);
+                        log.Info("Key: " + key + " Value: " + settings[key].Value);
                     }
                 }
-                this.clearPartDocument();
+                this.ClearPartDocument();
                 // Create a new instance of PropertySets.
                 // SolidEdgeFileProperties.PropertySets objPropertySets = new SolidEdgeFileProperties.PropertySets();
                 // objPropertySets.Open(filePath, true);
                 // foreach (SolidEdgeFileProperties.Properties objProperties in objPropertySets) {
                     // foreach (SolidEdgeFileProperties.Property objProperty in objProperties) {
-                        // System.Diagnostics.Debug.WriteLine("showConfigurationContainer: prop: " + objProperty.Name + " = " + objProperty.Value);
+                        // log.Info("showConfigurationContainer: prop: " + objProperty.Name + " = " + objProperty.Value);
                     // }
                 // }
                 // objPropertySets.Close();
@@ -194,13 +198,13 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     // }
                 }
             } catch (Exception ex) {
-                System.Diagnostics.Debug.WriteLine("showConfigurationContainer: " + ex.Message);
+                log.Info("showConfigurationContainer: " + ex.Message);
             }
             this.edgeBar.Panel2Collapsed = false;
         }
 
-        private void partLibrary_ItemDrag(object sender, ItemDragEventArgs e) {
-            System.Diagnostics.Debug.WriteLine("partLibrary_ItemDrag: e.Item: " + e.Item);
+        private void PartLibrary_ItemDrag(object sender, ItemDragEventArgs e) {
+            log.Info("partLibrary_ItemDrag: e.Item: " + e.Item);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
                 if (item.Text != null && File.Exists(this.currentDirectory.Text + "\\" + item.Text)) {
                     this.partLibrary.DoDragDrop(@"" + this.currentDirectory.Text + "\\" + item.Text, DragDropEffects.Copy);
