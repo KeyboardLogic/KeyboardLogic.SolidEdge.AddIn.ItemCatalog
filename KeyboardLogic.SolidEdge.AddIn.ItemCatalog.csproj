@@ -109,6 +109,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="KeyboardLogicKeyFile.pfx" />
+    <None Include="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\PartProperty.datasource" />
   </ItemGroup>

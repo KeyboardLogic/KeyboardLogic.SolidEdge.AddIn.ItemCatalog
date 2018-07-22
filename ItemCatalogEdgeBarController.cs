@@ -1,12 +1,6 @@
 ﻿using System;
 using System.Configuration;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using SolidEdgeCommunity.AddIn;
 using SolidEdgeCommunity.Extensions; // https://github.com/SolidEdgeCommunity/SolidEdge.Community/wiki/Using-Extension-Methods
@@ -24,9 +18,9 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         private SolidEdgePart.PartDocument partDocument;
 
         public ItemCatalogEdgeBarController() {
-            log.Info("Item Catalog Loaded");
             //Open the configuration file using the dll location
             this.myDllConfig = ConfigurationManager.OpenExeConfiguration(this.GetType().Assembly.Location);
+            log.Info("Item Catalog Loaded");
             KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["appSettings"]).Settings;
             if (settings.Count == 0) {
                 log.Info("AppSettings is empty.");
@@ -67,7 +61,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void PartLibrary_SelectedIndexChanged(object sender, EventArgs e) {
-            log.Info("partLibrary_SelectedIndexChanged: Documents.Count: " + this.application.Documents.Count);
+            log.Info("Documents.Count: " + this.application.Documents.Count);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
                 if (item.Text != null && File.Exists(this.currentDirectory.Text + "\\" + item.Text)) { // Display preview of part
                     // TODO: display preview of selected part
@@ -79,7 +73,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void PartLibrary_DoubleClick(object sender, EventArgs e) {
-            log.Info("partLibrary_DoubleClick: Documents.Count: " + this.application.Documents.Count);
+            log.Info("Documents.Count: " + this.application.Documents.Count);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
                 if (item.Text != null && Directory.Exists(this.currentDirectory.Text + "\\" + item.Text)) {
                     this.currentDirectory.Text = this.currentDirectory.Text + "\\" + item.Text;
@@ -204,7 +198,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void PartLibrary_ItemDrag(object sender, ItemDragEventArgs e) {
-            log.Info("partLibrary_ItemDrag: e.Item: " + e.Item);
+            log.Info("e.Item: " + e.Item);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
                 if (item.Text != null && File.Exists(this.currentDirectory.Text + "\\" + item.Text)) {
                     this.partLibrary.DoDragDrop(@"" + this.currentDirectory.Text + "\\" + item.Text, DragDropEffects.Copy);

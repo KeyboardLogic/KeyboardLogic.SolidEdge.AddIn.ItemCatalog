@@ -76,7 +76,7 @@
         "Entry"
         {
         "MsmKey" = "8:_7FBAD74DAA8CB312E86BEC115B46AA0E"
-        "OwnerKey" = "8:_C85114C3A25B4B1583FA8DD12E8C4881"
+        "OwnerKey" = "8:_ACF0B964B9DD3C81324D7F67263C8336"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -88,7 +88,7 @@
         "Entry"
         {
         "MsmKey" = "8:_7FBAD74DAA8CB312E86BEC115B46AA0E"
-        "OwnerKey" = "8:_ACF0B964B9DD3C81324D7F67263C8336"
+        "OwnerKey" = "8:_C85114C3A25B4B1583FA8DD12E8C4881"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -148,43 +148,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C85114C3A25B4B1583FA8DD12E8C4881"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_769777BD4B93D71E653CDCB03CE95CB9"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EA57950570EDF0634DF07EE680D8E72B"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_4AC9B840C1B36DEEF3B870C43B228F83"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_21E642655AB5367C335D4B23F173B385"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7156CB3542A62E4DDFD54F3981596856"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_E47411E7E2D919BB54DACAF2D78D08DB"
+        "OwnerKey" = "8:_7FBAD74DAA8CB312E86BEC115B46AA0E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -196,7 +160,43 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7FBAD74DAA8CB312E86BEC115B46AA0E"
+        "OwnerKey" = "8:_E47411E7E2D919BB54DACAF2D78D08DB"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_7156CB3542A62E4DDFD54F3981596856"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_21E642655AB5367C335D4B23F173B385"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_4AC9B840C1B36DEEF3B870C43B228F83"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EA57950570EDF0634DF07EE680D8E72B"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_769777BD4B93D71E653CDCB03CE95CB9"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C85114C3A25B4B1583FA8DD12E8C4881"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -301,11 +301,6 @@
             "AssemblyAsmDisplayName" = "8:System.Configuration.ConfigurationManager, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_21E642655AB5367C335D4B23F173B385"
-                    {
-                    "Name" = "8:System.Configuration.ConfigurationManager.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Configuration.ConfigurationManager.dll"
             "TargetName" = "8:"
@@ -332,11 +327,6 @@
             "AssemblyAsmDisplayName" = "8:System.Security.AccessControl, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_4AC9B840C1B36DEEF3B870C43B228F83"
-                    {
-                    "Name" = "8:System.Security.AccessControl.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Security.AccessControl.dll"
             "TargetName" = "8:"
@@ -363,11 +353,6 @@
             "AssemblyAsmDisplayName" = "8:SolidEdge.Community.Reader, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7156CB3542A62E4DDFD54F3981596856"
-                    {
-                    "Name" = "8:SolidEdge.Community.Reader.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SolidEdge.Community.Reader.dll"
             "TargetName" = "8:"
@@ -394,11 +379,6 @@
             "AssemblyAsmDisplayName" = "8:System.Security.Principal.Windows, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_769777BD4B93D71E653CDCB03CE95CB9"
-                    {
-                    "Name" = "8:System.Security.Principal.Windows.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Security.Principal.Windows.dll"
             "TargetName" = "8:"
@@ -425,11 +405,6 @@
             "AssemblyAsmDisplayName" = "8:Interop.SolidEdge, Version=110.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_7FBAD74DAA8CB312E86BEC115B46AA0E"
-                    {
-                    "Name" = "8:Interop.SolidEdge.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Interop.SolidEdge.dll"
             "TargetName" = "8:"
@@ -476,11 +451,6 @@
             "AssemblyAsmDisplayName" = "8:SolidEdge.Community, Version=110.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_ACF0B964B9DD3C81324D7F67263C8336"
-                    {
-                    "Name" = "8:SolidEdge.Community.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SolidEdge.Community.dll"
             "TargetName" = "8:"
@@ -507,11 +477,6 @@
             "AssemblyAsmDisplayName" = "8:SolidEdge.Community.AddIn, Version=110.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_E47411E7E2D919BB54DACAF2D78D08DB"
-                    {
-                    "Name" = "8:SolidEdge.Community.AddIn.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:SolidEdge.Community.AddIn.dll"
             "TargetName" = "8:"
@@ -538,11 +503,6 @@
             "AssemblyAsmDisplayName" = "8:System.Security.Permissions, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_EA57950570EDF0634DF07EE680D8E72B"
-                    {
-                    "Name" = "8:System.Security.Permissions.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Security.Permissions.dll"
             "TargetName" = "8:"

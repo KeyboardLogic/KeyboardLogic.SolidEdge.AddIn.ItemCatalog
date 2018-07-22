@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 using SolidEdgeCommunity.AddIn;
 using SolidEdgeFramework;
 using log4net;
 using System.Reflection;
 
 // Logging configuration
-[assembly: log4net.Config.XmlConfigurator(Watch = true)]
-//[assembly: log4net.Config.XmlConfigurator(ConfigFile = "Log4Net.config", Watch = true)]
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config", Watch = true)]
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
-	
+           
 	[ComVisible(true)]
 	[Guid("B440CD64-4926-446A-AA6E-A5115E21F43D")] // Must be unique!
 	[ProgId("KeyboardLogic.SolidEdge.AddIn.ItemCatalog")] // Must be unique!
@@ -29,12 +27,16 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// <summary>
         /// Called when the addin first connects to a new Solid Edge environment.
         /// </summary>
-        public override void OnConnectToEnvironment(SolidEdgeFramework.Environment environment, bool firstTime) { }
+        public override void OnConnectToEnvironment(SolidEdgeFramework.Environment environment, bool firstTime) {
+            log.Info("Item Catalog Connected");
+        }
 
         /// <summary>
         /// Called when the addin is about to be unloaded by Solid Edge.
         /// </summary>
-        public override void OnDisconnection(SeDisconnectMode DisconnectMode) { }
+        public override void OnDisconnection(SeDisconnectMode DisconnectMode) {
+            log.Info("Item Catalog Disconnected");
+        }
 
         /// <summary>
         /// Called when Solid Edge raises the SolidEdgeFramework.ISEAddInEdgeBarEvents[Ex].AddPage() event.
@@ -66,7 +68,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// </summary>
         [ComRegisterFunction]
         public static void OnRegister(Type t) {
-            MessageBox.Show("OnRegister");
             string title = "AddIn ItemCatalog";
             string summary = "Solid Edge Item Catalog Addin in .NET 4.0.";
             var enabled = true; // You have the option to register the addin in a disabled state.
@@ -80,8 +81,9 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             try {
                 Register(t, title, summary, enabled, environments);
             } catch (Exception ex) {
-                MessageBox.Show(ex.StackTrace, ex.Message);
+                log.Error("Could not register Item Catalog | " + ex.Message);
             }
+            log.Info("Item Catalog Registered");
         }
 
         /// <summary>
@@ -89,8 +91,8 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// </summary>
         [ComUnregisterFunction]
         public static void OnUnregister(Type t) {
-            MessageBox.Show("OnUnregister");
             Unregister(t);
+            log.Info("Item Catalog Unregistered");
         }
     }
 }
