@@ -33,6 +33,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             this.rootFolderPath = settings["motherPartFolder"].Value;
 
             InitializeComponent();
+            log.Info("Load Completed");
         }
 
         private void ControllerLoad(object sender, EventArgs e) {
@@ -41,9 +42,10 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void ControllerAfterInitialize(object sender, EventArgs e) {
+            log.Info("After Initilization: Started");
             // These properties are not initialized until AfterInitialize is called.
             if (partLibraryImageList.Images.ContainsKey(".par") == false) {
-                Icon icon = IconTools.GetIconForFile("test.par", ShellIconSize.SmallIcon);
+                Icon icon = IconTools.GetIconForExtension(".par", ShellIconSize.SmallIcon);
                 if (icon != null) {
                     partLibraryImageList.Images.Add(icon);
                     partLibraryImageList.Images.SetKeyName(1, ".par");
@@ -58,6 +60,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             this.assemblyDocument = application.GetActiveDocument<SolidEdgeAssembly.AssemblyDocument>(false);
             //((SolidEdgeFramework.ISEApplicationEvents_Event)this.application.ApplicationEvents).AfterWindowActivate += test;
             this.currentDirectory.Text = this.rootFolderPath;
+            log.Info("AFter Initilization: Complete");
         }
 
         private void PartLibrary_SelectedIndexChanged(object sender, EventArgs e) {
@@ -86,6 +89,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void CurrentDirectory_TextChanged(object sender, EventArgs e) {
+            log.Info("currentDirectory.Text: " + this.currentDirectory.Text);
             if (this.currentDirectory.Text == null || !this.currentDirectory.Text.Contains(this.rootFolderPath)) {
                 this.currentDirectory.Text = this.rootFolderPath;
             } else {
