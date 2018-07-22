@@ -223,12 +223,18 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             }
         }
 
-        private void partProperties_Enter(object sender, EventArgs e) {
+        private void PartProperties_Enter(object sender, EventArgs e) {
             log.Info("Configure the part");
         }
 
-        private void partProperties_CurrentCellChanged(object sender, EventArgs e) {
+        private void PartProperties_CurrentCellChanged(object sender, EventArgs e) {
             // log.Info("Current Cell: " + this.partProperties.CurrentCell);
+        }
+
+        private void PartProperties_KeyPress(object sender, KeyPressEventArgs e) {
+            if (e.KeyChar == (Char)Keys.Enter) {
+                this.OkButton_Click(sender, e);
+            }
         }
     }
 }

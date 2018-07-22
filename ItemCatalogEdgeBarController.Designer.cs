@@ -70,7 +70,6 @@
             // edgeBar.Panel2
             // 
             this.edgeBar.Panel2.Controls.Add(this.panel1);
-            this.edgeBar.Panel2Collapsed = true;
             this.edgeBar.Size = new System.Drawing.Size(278, 630);
             this.edgeBar.SplitterDistance = 350;
             this.edgeBar.TabIndex = 0;
@@ -87,7 +86,7 @@
             this.partLibrary.Name = "partLibrary";
             this.partLibrary.RightToLeftLayout = true;
             this.partLibrary.ShowGroups = false;
-            this.partLibrary.Size = new System.Drawing.Size(278, 605);
+            this.partLibrary.Size = new System.Drawing.Size(278, 325);
             this.partLibrary.SmallImageList = this.partLibraryImageList;
             this.partLibrary.TabIndex = 1;
             this.partLibrary.UseCompatibleStateImageBehavior = false;
@@ -182,9 +181,9 @@
             this.nameDataGridViewTextBoxColumn,
             this.valueDataGridViewTextBoxColumn,
             this.unitsDataGridViewTextBoxColumn});
+            this.partProperties.Cursor = System.Windows.Forms.Cursors.PanNW;
             this.partProperties.DataSource = this.partPropertyBindingSource;
             this.partProperties.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.partProperties.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnEnter;
             this.partProperties.GridColor = System.Drawing.SystemColors.Control;
             this.partProperties.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.partProperties.Location = new System.Drawing.Point(0, 0);
@@ -196,8 +195,9 @@
             this.partProperties.ShowRowErrors = false;
             this.partProperties.Size = new System.Drawing.Size(278, 235);
             this.partProperties.TabIndex = 0;
-            this.partProperties.CurrentCellChanged += new System.EventHandler(this.partProperties_CurrentCellChanged);
-            this.partProperties.Enter += new System.EventHandler(this.partProperties_Enter);
+            this.partProperties.CurrentCellChanged += new System.EventHandler(this.PartProperties_CurrentCellChanged);
+            this.partProperties.Enter += new System.EventHandler(this.PartProperties_Enter);
+            this.partProperties.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PartProperties_KeyPress);
             // 
             // cancelButton
             // 
