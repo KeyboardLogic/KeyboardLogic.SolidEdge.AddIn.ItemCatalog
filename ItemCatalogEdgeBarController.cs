@@ -13,6 +13,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private Configuration myDllConfig;
         private string rootFolderPath;
+        private string currentPath;
         private SolidEdgeFramework.Application application;
         private SolidEdgePart.PartDocument partDocument;
 
@@ -29,6 +30,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             }
             // Set root folder for mother parts
             this.rootFolderPath = settings["motherPartFolder"].Value;
+            this.currentPath = this.rootFolderPath;
 
             InitializeComponent();
             log.Info("Item Catalog Loaded");
@@ -54,17 +56,18 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             SolidEdgeCommunity.OleMessageFilter.Register();
             // Connect to or start Solid Edge.
             this.application = SolidEdgeCommunity.SolidEdgeUtils.Connect(true, true);
-            //((SolidEdgeFramework.ISEApplicationEvents_Event)this.application.ApplicationEvents).AfterWindowActivate += test;
-            this.currentDirectory.Text = this.rootFolderPath;
+            
+            this.currentDirectory.Text = this.currentPath.Substring(this.currentPath.LastIndexOf("\\") + 1);
+            this.UpdateDirectories();
             log.Info("AFter Initilization: Complete");
         }
 
         private void PartLibrary_SelectedIndexChanged(object sender, EventArgs e) {
             log.Info("Documents.Count: " + this.application.Documents.Count);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
-                if (item.Text != null && File.Exists(this.currentDirectory.Text + "\\" + item.Text)) { // Display preview of part
+                if (item.Text != null && File.Exists(this.currentPath + "\\" + item.Text)) { // Display preview of part
                     // TODO: display preview of selected part
-                    this.ShowConfigurationContainer(this.currentDirectory.Text + "\\" + item.Text);
+                    this.ShowConfigurationContainer(this.currentPath + "\\" + item.Text);
                 } else {
                     this.HideConfigurationContainer();
                 }
@@ -74,28 +77,31 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         private void PartLibrary_DoubleClick(object sender, EventArgs e) {
             log.Info("Documents.Count: " + this.application.Documents.Count);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
-                if (item.Text != null && Directory.Exists(this.currentDirectory.Text + "\\" + item.Text)) {
-                    this.currentDirectory.Text = this.currentDirectory.Text + "\\" + item.Text;
+                if (item.Text != null && Directory.Exists(this.currentPath + "\\" + item.Text)) {
+                    this.currentPath += "\\" + item.Text;
+                    this.currentDirectory.Text = item.Text;
+                    this.UpdateDirectories();
                 }
             }
         }
 
         private void BackButton_Click(object sender, EventArgs e) {
-            this.currentDirectory.Text = this.currentDirectory.Text.Substring(0,this.currentDirectory.Text.LastIndexOf("\\"));
+            int index = this.currentPath.LastIndexOf("\\");
+            if (index >= this.rootFolderPath.Length) {
+                string[] folders = this.currentPath.Split('\\');
+                this.currentDirectory.Text = folders[folders.Length-2];
+                this.currentPath = this.currentPath.Substring(0, index);
+                this.UpdateDirectories();
+            }
         }
 
-        private void CurrentDirectory_TextChanged(object sender, EventArgs e) {
-            log.Debug("currentDirectory.Text: " + this.currentDirectory.Text);
-            if (this.currentDirectory.Text == null || !this.currentDirectory.Text.Contains(this.rootFolderPath)) {
-                this.currentDirectory.Text = this.rootFolderPath;
-            } else {
-                this.partLibrary.Items.Clear();
-                foreach (string str in Directory.GetDirectories(this.currentDirectory.Text)) {
-                    this.partLibrary.Items.Add(Path.GetFileName(str), 0);
-                }
-                foreach (string str in Directory.GetFiles(this.currentDirectory.Text, "*.par")) {
-                    this.partLibrary.Items.Add(Path.GetFileName(str), 1);
-                }
+        private void UpdateDirectories() {
+            this.partLibrary.Items.Clear();
+            foreach (string str in Directory.GetDirectories(this.currentPath)) {
+                this.partLibrary.Items.Add(Path.GetFileName(str), 0);
+            }
+            foreach (string str in Directory.GetFiles(this.currentPath, "*.par")) {
+                this.partLibrary.Items.Add(Path.GetFileName(str), 1);
             }
         }
 
@@ -103,28 +109,37 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["appSettings"]).Settings;
             // Get a refrence to the active assembly document.
             SolidEdgeAssembly.AssemblyDocument assemblyDocument = application.GetActiveDocument<SolidEdgeAssembly.AssemblyDocument>(false);
-            log.Debug("assemblyDocument: " + assemblyDocument.Name);
-            log.Debug("partDocument: " + this.partDocument.Name);
-            // Handles naming convention when it is not followed
-            int length = this.partDocument.Name.IndexOf(settings["fileNameToReplace"].Value);
-            if (length <= 0) {
-                length = this.partDocument.Name.Length - 4;
+            log.Debug("assemblyDocument: " + assemblyDocument.Name + " path: " + assemblyDocument.Path);
+            if (assemblyDocument.Path == null || assemblyDocument.Path == "") {
+                MessageBox.Show("You must save the current assembly before adding parts");
+            } else {
+                log.Debug("partDocument: " + this.partDocument.Name);
+                // Handles naming convention when it is not followed
+                int length = this.partDocument.Name.IndexOf(settings["fileNameToReplace"].Value);
+                if (length <= 0) {
+                    length = this.partDocument.Name.Length - 4;
+                }
+                string fileName = this.partDocument.Name.Substring(0, length);
+                foreach (PartProperty partProperty in this.partPropertyBindingSource) {
+                    fileName += ", " + partProperty.Name + "=" + partProperty.Value + partProperty.Units;
+                }
+                // Remove invalid fileName characters
+                fileName = string.Join("", fileName.Split(Path.GetInvalidFileNameChars()));
+                log.Debug("fileName: " + fileName);
+                string fullPathName = assemblyDocument.Path;
+                string assemblyPartFolderName = settings["assemblyPartFolderName"].Value;
+                if (assemblyPartFolderName != null & assemblyPartFolderName != "") {
+                    assemblyPartFolderName = string.Join("", assemblyPartFolderName.Split(Path.GetInvalidFileNameChars()));
+                    fullPathName += "\\" + assemblyPartFolderName;
+                    Directory.CreateDirectory(fullPathName);
+                }
+                fullPathName += "\\" + fileName + ".par";
+                log.Debug("fullPathName: " + fullPathName);
+                this.partDocument.SaveCopyAs(fullPathName);
+                this.HideConfigurationContainer();
+                assemblyDocument.Occurrences.AddWithTransform(fullPathName, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+                this.application.DoIdle();
             }
-            string fileName = this.partDocument.Name.Substring(0, length);
-            foreach (PartProperty partProperty in this.partPropertyBindingSource) {
-                fileName += ", " + partProperty.Name + "=" + partProperty.Value + partProperty.Units;
-            }
-            // Remove invalid fileName characters
-            fileName = string.Join("", fileName.Split(Path.GetInvalidFileNameChars()));
-            log.Debug("fileName: " + fileName);
-            string fullPathName = assemblyDocument.Path + "\\" + fileName + ".par";
-            log.Debug("fullPathName: " + fullPathName);
-            // TODO: handle when assemblyDocument has not been saved before adding a part
-            this.partDocument.SaveCopyAs(fullPathName);
-            this.HideConfigurationContainer();
-            
-            assemblyDocument.Occurrences.AddWithTransform(fullPathName, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-            this.application.DoIdle();
         }
 
         private void CancelButton_Click(object sender, EventArgs e) {

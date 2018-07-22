@@ -35,12 +35,12 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.configurationContainer = new System.Windows.Forms.SplitContainer();
             this.partProperties = new System.Windows.Forms.DataGridView();
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.okButton = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.unitsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.partPropertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.okButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.edgeBar)).BeginInit();
             this.edgeBar.Panel1.SuspendLayout();
             this.edgeBar.Panel2.SuspendLayout();
@@ -126,7 +126,6 @@
             this.currentDirectory.Name = "currentDirectory";
             this.currentDirectory.ReadOnly = true;
             this.currentDirectory.Size = new System.Drawing.Size(125, 25);
-            this.currentDirectory.TextChanged += new System.EventHandler(this.CurrentDirectory_TextChanged);
             // 
             // backButton
             // 
@@ -192,28 +191,6 @@
             this.partProperties.Size = new System.Drawing.Size(278, 235);
             this.partProperties.TabIndex = 0;
             // 
-            // cancelButton
-            // 
-            this.cancelButton.AutoSize = true;
-            this.cancelButton.Location = new System.Drawing.Point(84, 2);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelButton.TabIndex = 1;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
-            // 
-            // okButton
-            // 
-            this.okButton.AutoSize = true;
-            this.okButton.Location = new System.Drawing.Point(3, 2);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 23);
-            this.okButton.TabIndex = 0;
-            this.okButton.Text = "OK";
-            this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.OkButton_Click);
-            // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
@@ -242,6 +219,28 @@
             // partPropertyBindingSource
             // 
             this.partPropertyBindingSource.DataSource = typeof(KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.AutoSize = true;
+            this.cancelButton.Location = new System.Drawing.Point(84, 2);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 1;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            // 
+            // okButton
+            // 
+            this.okButton.AutoSize = true;
+            this.okButton.Location = new System.Drawing.Point(3, 2);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.TabIndex = 0;
+            this.okButton.Text = "OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // ItemCatalogEdgeBarController
             // 
