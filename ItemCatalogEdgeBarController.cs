@@ -110,7 +110,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void OkButton_Click(object sender, EventArgs e) {
-            KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["appSettings"]).Settings;
+            KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["appSettings"]).Settings;  
             // Get a refrence to the active assembly document.
             SolidEdgeAssembly.AssemblyDocument assemblyDocument = application.GetActiveDocument<SolidEdgeAssembly.AssemblyDocument>(false);
             log.Debug("assemblyDocument: " + assemblyDocument.Name + " path: " + assemblyDocument.Path);
@@ -124,8 +124,12 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     length = this.partDocument.Name.Length - 4;
                 }
                 string fileName = this.partDocument.Name.Substring(0, length);
+                KeyValueConfigurationCollection partNameSettings = ((AppSettingsSection)this.myDllConfig.Sections["partName"]).Settings;
                 foreach (PartProperty partProperty in this.partPropertyBindingSource) {
-                    fileName += ", " + partProperty.Name + "=" + partProperty.Value + partProperty.Units;
+                    if (partNameSettings[partProperty.Name] != null) {
+                        //fileName += ", " + partProperty.Name + "=" + partProperty.Value + partProperty.Units;
+                        fileName += "_" + partProperty.Value;
+                    }
                 }
                 // Remove invalid fileName characters
                 fileName = string.Join("", fileName.Split(Path.GetInvalidFileNameChars()));
@@ -223,17 +227,33 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             }
         }
 
-        private void PartProperties_Enter(object sender, EventArgs e) {
-            log.Info("Configure the part");
-        }
-
-        private void PartProperties_CurrentCellChanged(object sender, EventArgs e) {
-            // log.Info("Current Cell: " + this.partProperties.CurrentCell);
-        }
-
         private void PartProperties_KeyPress(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == (Char)Keys.Enter) {
                 this.OkButton_Click(sender, e);
+            } else if (e.KeyChar == (Char)Keys.Tab) {
+                //this.PartProperties_SelectionChanged(sender, e);
+            }
+        }
+
+        private void PartProperties_SelectionChanged(object sender, EventArgs e) {
+            log.Info(e.GetType() + ": " + e.ToString());
+            DataGridViewCell currentCell = this.partProperties.CurrentCell;
+            if (currentCell != null) {
+                log.Debug("currentCell: [" + currentCell.RowIndex + ", " + currentCell.ColumnIndex + "]");
+                int nextRow = currentCell.RowIndex;
+                int nextCol = currentCell.ColumnIndex;
+                if (nextCol != 1) {
+                    nextCol = 1;
+                    nextRow++;
+                }
+                if (nextRow == this.partProperties.RowCount) {
+                    nextRow = 0;
+                }
+                DataGridViewCell nextCell = this.partProperties.Rows[nextRow].Cells[nextCol];
+                if (nextCell != null && nextCell.Visible) {
+                    log.Debug("nextCell: [" + nextCell.RowIndex + ", " + nextCell.ColumnIndex + "]");
+                    this.partProperties.CurrentCell = nextCell;
+                }
             }
         }
     }

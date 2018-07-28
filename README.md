@@ -3,6 +3,8 @@
 In Package Manager Console run the following commands
 Register-SolidEdgeAddIn
 
+Unregister-SolidEdgeAddIn
+
 Computer\HKEY_CLASSES_ROOT\CLSID\{B440CD64-4926-446A-AA6E-A5115E21F43D}
 
 

@@ -103,6 +103,8 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.AllowMerge = false;
+            this.toolStrip1.CanOverflow = false;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.currentDirectory,
@@ -110,6 +112,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.toolStrip1.ShowItemToolTips = false;
             this.toolStrip1.Size = new System.Drawing.Size(278, 25);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
@@ -125,6 +128,7 @@
             // 
             this.currentDirectory.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.currentDirectory.Enabled = false;
+            this.currentDirectory.HideSelection = false;
             this.currentDirectory.Name = "currentDirectory";
             this.currentDirectory.ReadOnly = true;
             this.currentDirectory.Size = new System.Drawing.Size(125, 25);
@@ -176,6 +180,7 @@
             this.partProperties.AutoGenerateColumns = false;
             this.partProperties.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.partProperties.BackgroundColor = System.Drawing.SystemColors.Control;
+            this.partProperties.CausesValidation = false;
             this.partProperties.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.partProperties.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.nameDataGridViewTextBoxColumn,
@@ -184,6 +189,7 @@
             this.partProperties.Cursor = System.Windows.Forms.Cursors.PanNW;
             this.partProperties.DataSource = this.partPropertyBindingSource;
             this.partProperties.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.partProperties.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.partProperties.GridColor = System.Drawing.SystemColors.Control;
             this.partProperties.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.partProperties.Location = new System.Drawing.Point(0, 0);
@@ -195,8 +201,7 @@
             this.partProperties.ShowRowErrors = false;
             this.partProperties.Size = new System.Drawing.Size(278, 235);
             this.partProperties.TabIndex = 0;
-            this.partProperties.CurrentCellChanged += new System.EventHandler(this.PartProperties_CurrentCellChanged);
-            this.partProperties.Enter += new System.EventHandler(this.PartProperties_Enter);
+            this.partProperties.SelectionChanged += new System.EventHandler(this.PartProperties_SelectionChanged);
             this.partProperties.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PartProperties_KeyPress);
             // 
             // cancelButton
