@@ -34,7 +34,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             this.currentPath = this.rootFolderPath;
 
             InitializeComponent();
-            log.Info("Item Catalog Loaded");
         }
 
         private void ControllerLoad(object sender, EventArgs e) {
@@ -65,7 +64,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void PartLibrary_SelectedIndexChanged(object sender, EventArgs e) {
-            log.Info("Documents.Count: " + this.application.Documents.Count);
+            log.Debug("Documents.Count: " + this.application.Documents.Count);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
                 if (item.Text != null && File.Exists(this.currentPath + "\\" + item.Text)) { // Display preview of part
                     // TODO: display preview of selected part
@@ -77,7 +76,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void PartLibrary_DoubleClick(object sender, EventArgs e) {
-            log.Info("Documents.Count: " + this.application.Documents.Count);
+            log.Debug("Documents.Count: " + this.application.Documents.Count);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
                 if (item.Text != null && Directory.Exists(this.currentPath + "\\" + item.Text)) {
                     this.currentPath += "\\" + item.Text;
@@ -128,7 +127,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 string fileName = this.partDocument.Name.Substring(0, length);
                 KeyValueConfigurationCollection partNameSettings = ((AppSettingsSection)this.myDllConfig.Sections["partName"]).Settings;
                 foreach (PartProperty partProperty in this.partPropertyBindingSource) {
-                    if (partNameSettings[partProperty.Name] != null) {
+                    if (partNameSettings[partProperty.Name] != null && partProperty.Value != 0) {
                         //fileName += ", " + partProperty.Name + "=" + partProperty.Value + partProperty.Units;
                         fileName += "_" + partProperty.Value;
                     }
