@@ -7,6 +7,7 @@ using SolidEdgeCommunity.Extensions; // https://github.com/SolidEdgeCommunity/So
 using System.IO;
 using log4net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     public partial class ItemCatalogEdgeBarController : EdgeBarControl {
@@ -43,6 +44,8 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 
         private void ControllerAfterInitialize(object sender, EventArgs e) {
             log.Info("After Initilization: Started");
+            // Register with OLE to handle concurrency issues on the current thread.
+            SolidEdgeCommunity.OleMessageFilter.Register();
             // These properties are not initialized until AfterInitialize is called.
             if (partLibraryImageList.Images.ContainsKey(".par") == false) {
                 Icon icon = IconTools.GetIconForExtension(".par", ShellIconSize.SmallIcon);
@@ -56,7 +59,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             SolidEdgeCommunity.OleMessageFilter.Register();
             // Connect to or start Solid Edge.
             this.application = SolidEdgeCommunity.SolidEdgeUtils.Connect(true, true);
-            
             this.currentDirectory.Text = this.currentPath.Substring(this.currentPath.LastIndexOf("\\") + 1);
             this.UpdateDirectories();
             log.Info("AFter Initilization: Complete");
@@ -145,7 +147,15 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 log.Debug("fullPathName: " + fullPathName);
                 this.partDocument.SaveCopyAs(fullPathName);
                 this.HideConfigurationContainer();
-                assemblyDocument.Occurrences.AddWithTransform(fullPathName, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+                int count = assemblyDocument.Occurrences.Count;
+                if (count > 0) {
+                    SolidEdgeAssembly.Occurrence occurrence = assemblyDocument.Occurrences.Item(count);
+                    occurrence.GetTransform(out double OriginX, out double OriginY, out double OriginZ, out double AngleX, out double AngleY, out double AngleZ);
+                    double offset = 0.05;
+                    assemblyDocument.Occurrences.AddWithTransform(fullPathName, OriginX + offset, OriginY + offset, OriginZ + offset, AngleX, AngleY, AngleZ);
+                } else {
+                    assemblyDocument.Occurrences.AddWithTransform(fullPathName, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
+                }
                 this.application.DoIdle();
             }
         }
@@ -157,10 +167,14 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         private void ClearPartDocument() {
             this.partPropertyBindingSource.Clear();
             if (this.partDocument != null) {
+                this.application.DoIdle();
                 this.partDocument.Close(false);
+                // Release our reference to the document.
+                //Marshal.FinalReleaseComObject(this.partDocument);
                 this.application.DoIdle();
                 this.partDocument = null;
             }
+            log.Debug("Cleared PartDocument Info");
         }
 
         /// <summary>
@@ -175,37 +189,42 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// Displays the configuration container used for changing values associated with part properties
         /// </summary>
         private void ShowConfigurationContainer(string filePath) {
+            log.Debug("filePath: " + filePath);
             try {
                 KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["variables"]).Settings;
                 if (settings.Count == 0) {
-                    log.Info("AppSettings is empty.");
+                    log.Warn("AppSettings is empty.");
                 } else {
                     foreach (string key in settings.AllKeys) {
-                        log.Info("Key: " + key + " Value: " + settings[key].Value);
+                        log.Debug("Key: " + key + " Value: " + settings[key].Value);
                     }
                 }
                 this.ClearPartDocument();
                 this.partDocument = (SolidEdgePart.PartDocument)this.application.Documents.Open(filePath, "8");
-                SolidEdgeFramework.VariableList variableList = (SolidEdgeFramework.VariableList)partDocument.GetVariables().Query("*", SolidEdgeConstants.VariableNameBy.seVariableNameByBoth, SolidEdgeConstants.VariableVarType.SeVariableVarTypeBoth, false);
+                SolidEdgeFramework.VariableList variableList = (SolidEdgeFramework.VariableList)this.partDocument.GetVariables().Query("*", SolidEdgeConstants.VariableNameBy.seVariableNameByBoth, SolidEdgeConstants.VariableVarType.SeVariableVarTypeBoth, false);
                 PartProperty partProperty;
                 foreach (var property in variableList) {
                     partProperty = null;
-                    // Determine the runtime type of the object.
-                    Type type = property.GetType();
-                    SolidEdgeFramework.ObjectType objectType = (SolidEdgeFramework.ObjectType)type.InvokeMember("Type", System.Reflection.BindingFlags.GetProperty, null, property, null);
-                    switch (objectType) {
-                        case SolidEdgeFramework.ObjectType.igDimension:
-                            SolidEdgeFrameworkSupport.Dimension dimension = (SolidEdgeFrameworkSupport.Dimension)property;
-                            partProperty = new PartDimension(dimension, this.partDocument.UnitsOfMeasure);
-                            break;
-                            // Currently only supporting dimension properties
-                            // case SolidEdgeFramework.ObjectType.igVariable:
-                            // SolidEdgeFramework.variable variable = (SolidEdgeFramework.variable)property;
-                            // partProperty = new PartVariable(variable, unitesOfMeasure);
-                            // break;
-                    }
-                    if (partProperty != null && settings[partProperty.Name] != null && partProperty.displayForConfiguration()) {
-                        this.partPropertyBindingSource.Add(partProperty);
+                    try {
+                        // Determine the runtime type of the object.
+                        Type type = property.GetType();
+                        SolidEdgeFramework.ObjectType objectType = (SolidEdgeFramework.ObjectType)type.InvokeMember("Type", System.Reflection.BindingFlags.GetProperty, null, property, null);
+                        switch (objectType) {
+                            case SolidEdgeFramework.ObjectType.igDimension:
+                                SolidEdgeFrameworkSupport.Dimension dimension = (SolidEdgeFrameworkSupport.Dimension)property;
+                                partProperty = new PartDimension(dimension, this.partDocument.UnitsOfMeasure);
+                                break;
+                                // Currently only supporting dimension properties
+                                // case SolidEdgeFramework.ObjectType.igVariable:
+                                // SolidEdgeFramework.variable variable = (SolidEdgeFramework.variable)property;
+                                // partProperty = new PartVariable(variable, unitesOfMeasure);
+                                // break;
+                        }
+                        if (partProperty != null && settings[partProperty.Name] != null && partProperty.displayForConfiguration()) {
+                            this.partPropertyBindingSource.Add(partProperty);
+                        }
+                    } catch (Exception ex) {
+                        log.Error(ex.Message);
                     }
                 }
                 this.edgeBar.Panel2Collapsed = false;
@@ -216,15 +235,27 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 
         private void PartLibrary_ItemDrag(object sender, ItemDragEventArgs e) {
             log.Info("e.Item: " + e.Item);
-            foreach (ListViewItem item in this.partLibrary.SelectedItems) {
-                if (item.Text != null && File.Exists(this.currentDirectory.Text + "\\" + item.Text)) {
-                    this.partLibrary.DoDragDrop(@"" + this.currentDirectory.Text + "\\" + item.Text, DragDropEffects.Copy);
-                    SolidEdgeAssembly.AssemblyDocument assemblyDocument = application.GetActiveDocument<SolidEdgeAssembly.AssemblyDocument>(false);
-                    log.Debug("assemblyDocument: " + assemblyDocument.Name);
-                    log.Debug("partDocument: " + this.partDocument.Name);
-                    assemblyDocument.Activate();
-                }
-            }
+            SolidEdgeAssembly.AssemblyDocument assemblyDocument = this.application.GetActiveDocument<SolidEdgeAssembly.AssemblyDocument>(false);
+            log.Debug("assemblyDocument: " + assemblyDocument.Name + " path: " + assemblyDocument.Path);
+
+            // Attempt to drag and drop part into diagram
+            /**
+            SolidEdgeFramework.Command _command = this.application.CreateCommand((int)SolidEdgeConstants.seCmdFlag.seNoDeactivate);
+            _command.Start();
+            SolidEdgeFramework.Mouse _mouse = _command.Mouse;
+            _mouse.LocateMode = (int)SolidEdgeConstants.seLocateModes.seLocateQuickPick;
+            _mouse.EnabledMove = true;
+            _mouse.EnabledDrag = true;
+            _mouse.ScaleMode = 1;   // Design model coordinates.
+            _mouse.WindowTypes = 1; // Graphic window's only.
+            _mouse.MouseUp += Mouse_MouseUp;
+            **/
+        }
+
+        private void Mouse_MouseUp(short sButton, short sShift, double dX, double dY, double dZ, object pWindowDispatch, int lKeyPointType, object pGraphicDispatch) {
+            // Note: Thread.CurrentThread.IsBackground = true so we must Invoke a call back to the main GUI thread.
+            log.Info("MouseUp: " + sButton + ", " + sShift + ", " + dX + ", " + dY + ", " + dZ + ", " + pWindowDispatch + ", " + lKeyPointType + ", " + pGraphicDispatch);
+            this.OkButton_Click(null, null);
         }
 
         private void PartProperties_KeyPress(object sender, KeyPressEventArgs e) {
@@ -242,7 +273,9 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 log.Debug("currentCell: [" + currentCell.RowIndex + ", " + currentCell.ColumnIndex + "]");
                 int nextRow = currentCell.RowIndex;
                 int nextCol = currentCell.ColumnIndex;
-                if (nextCol != 1) {
+                if (nextCol < 1) {
+                    nextCol = 1;
+                } else if (nextCol > 1) {
                     nextCol = 1;
                     nextRow++;
                 }
