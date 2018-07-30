@@ -170,7 +170,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 this.application.DoIdle();
                 this.partDocument.Close(false);
                 // Release our reference to the document.
-                //Marshal.FinalReleaseComObject(this.partDocument);
+                Marshal.FinalReleaseComObject(this.partDocument);
                 this.application.DoIdle();
                 this.partDocument = null;
             }
