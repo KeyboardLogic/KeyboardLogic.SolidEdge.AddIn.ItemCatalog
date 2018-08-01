@@ -295,12 +295,12 @@
         private System.Windows.Forms.ImageList partLibraryImageList;
         private System.Windows.Forms.SplitContainer configurationContainer;
         private System.Windows.Forms.DataGridView partProperties;
-        private System.Windows.Forms.BindingSource partPropertyBindingSource;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn unitsDataGridViewTextBoxColumn;
         protected System.Windows.Forms.ListView partLibrary;
+        protected System.Windows.Forms.BindingSource partPropertyBindingSource;
     }
 }
