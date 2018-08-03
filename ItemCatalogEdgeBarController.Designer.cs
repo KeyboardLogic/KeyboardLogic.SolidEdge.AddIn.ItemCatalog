@@ -35,12 +35,12 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.configurationContainer = new System.Windows.Forms.SplitContainer();
             this.partProperties = new System.Windows.Forms.DataGridView();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.okButton = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.unitsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.partPropertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.okButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.edgeBar)).BeginInit();
             this.edgeBar.Panel1.SuspendLayout();
             this.edgeBar.Panel2.SuspendLayout();
@@ -91,8 +91,7 @@
             this.partLibrary.TabIndex = 1;
             this.partLibrary.UseCompatibleStateImageBehavior = false;
             this.partLibrary.View = System.Windows.Forms.View.List;
-            this.partLibrary.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.PartLibrary_ItemDrag);
-            this.partLibrary.SelectedIndexChanged += new System.EventHandler(this.PartLibrary_SelectedIndexChanged);
+            this.partLibrary.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.PartLibrary_ItemSelectionChanged);
             this.partLibrary.DoubleClick += new System.EventHandler(this.PartLibrary_DoubleClick);
             // 
             // partLibraryImageList
@@ -204,35 +203,6 @@
             this.partProperties.SelectionChanged += new System.EventHandler(this.PartProperties_SelectionChanged);
             this.partProperties.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PartProperties_KeyPress);
             // 
-            // nameDataGridViewTextBoxColumn
-            // 
-            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
-            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
-            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
-            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // valueDataGridViewTextBoxColumn
-            // 
-            this.valueDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
-            this.valueDataGridViewTextBoxColumn.FillWeight = 50F;
-            this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
-            this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
-            // 
-            // unitsDataGridViewTextBoxColumn
-            // 
-            this.unitsDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.unitsDataGridViewTextBoxColumn.DataPropertyName = "Units";
-            this.unitsDataGridViewTextBoxColumn.FillWeight = 50F;
-            this.unitsDataGridViewTextBoxColumn.HeaderText = "Units";
-            this.unitsDataGridViewTextBoxColumn.Name = "unitsDataGridViewTextBoxColumn";
-            this.unitsDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // partPropertyBindingSource
-            // 
-            this.partPropertyBindingSource.DataSource = typeof(KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty);
-            // 
             // cancelButton
             // 
             this.cancelButton.AutoSize = true;
@@ -254,6 +224,39 @@
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.OkButton_Click);
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.ReadOnly = true;
+            this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.nameDataGridViewTextBoxColumn.Width = 60;
+            // 
+            // valueDataGridViewTextBoxColumn
+            // 
+            this.valueDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
+            this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
+            this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
+            this.valueDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.valueDataGridViewTextBoxColumn.Width = 59;
+            // 
+            // unitsDataGridViewTextBoxColumn
+            // 
+            this.unitsDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.unitsDataGridViewTextBoxColumn.DataPropertyName = "Units";
+            this.unitsDataGridViewTextBoxColumn.HeaderText = "Units";
+            this.unitsDataGridViewTextBoxColumn.Name = "unitsDataGridViewTextBoxColumn";
+            this.unitsDataGridViewTextBoxColumn.ReadOnly = true;
+            this.unitsDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.unitsDataGridViewTextBoxColumn.Width = 56;
+            // 
+            // partPropertyBindingSource
+            // 
+            this.partPropertyBindingSource.DataSource = typeof(KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty);
             // 
             // ItemCatalogEdgeBarController
             // 
@@ -297,10 +300,10 @@
         private System.Windows.Forms.DataGridView partProperties;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button okButton;
+        protected System.Windows.Forms.ListView partLibrary;
+        private System.Windows.Forms.BindingSource partPropertyBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn unitsDataGridViewTextBoxColumn;
-        protected System.Windows.Forms.ListView partLibrary;
-        protected System.Windows.Forms.BindingSource partPropertyBindingSource;
     }
 }

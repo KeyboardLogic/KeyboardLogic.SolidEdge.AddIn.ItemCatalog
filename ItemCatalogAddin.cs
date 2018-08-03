@@ -28,6 +28,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// Called when the addin is first loaded by Solid Edge.
         /// </summary>
         public override void OnConnection(SolidEdgeFramework.Application application, SeConnectMode ConnectMode, SolidEdgeFramework.AddIn AddInInstance) {
+            log.Info("Item Catalog: OnConnection");
             // If you makes changes to your ribbon, be sure to increment the GuiVersion or your ribbon
             // will not initialize properly.
             AddInEx.GuiVersion = 1;
@@ -79,6 +80,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// Called when Solid Edge raises the SolidEdgeFramework.ISEAddInEdgeBarEvents[Ex].AddPage() event.
         /// </summary>
         public override void OnCreateEdgeBarPage(EdgeBarController controller, SolidEdgeDocument document) {
+            log.Info("Item Catalog: OnCreateEdgeBarPage");
             // Note: Confirmed with Solid Edge development, OnCreateEdgeBarPage does not get called when Solid Edge is first open and the first document is open.
             // i.e. Under the hood, SolidEdgeFramework.ISEAddInEdgeBarEvents[Ex].AddPage() is not getting called.
             // As an alternative, you can call DemoAddIn.Instance.EdgeBarController.Add() in some other event if you need.

@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="PartProperty" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty, KeyboardLogic.SolidEdge.AddIn.ItemCatalog, Version=1.0.6759.20762, Culture=neutral, PublicKeyToken=null</TypeInfo>
+   <TypeInfo>KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty, KeyboardLogic.SolidEdge.AddIn.ItemCatalog, Version=1.0.6788.22872, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>
