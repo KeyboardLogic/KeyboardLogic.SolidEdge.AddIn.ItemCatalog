@@ -79,7 +79,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["variables"]).Settings;
             this.partPropertyBindingSource.Clear();
             // TODO: fix crashing issue from heap corruption when opening part document
-            SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(filePath);//, "8");
+            SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(filePath, 0x00000008);//, "8");
             this.Document.Application.DoIdle();
             // Get a reference to the Variables collection.
             SolidEdgeFramework.Variables variables = (SolidEdgeFramework.Variables)partDocument.Variables;
@@ -111,7 +111,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 MessageBox.Show("You must save the current assembly before adding parts");
             } else {
                 // TODO: fix crashing issue from heap corruption when opening part document
-                SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(this.filePath);//, "8");
+                SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(this.filePath, 0x00000008);//, "8");
                 this.Document.Application.DoIdle();
                 log.Debug("partDocument: " + partDocument.Name);
                 // Handles naming convention when it is not followed
@@ -182,6 +182,20 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     double offset = 0.05;
                     occurrence = ((SolidEdgeAssembly.AssemblyDocument)this.Document).Occurrences.AddWithTransform(fullPathName, OriginX + offset, OriginY + offset, OriginZ + offset, AngleX, AngleY, AngleZ);
                     // delete grounded relationship from occurrence.Relations3d
+                    SolidEdgeAssembly.Relations3d relation3d = (SolidEdgeAssembly.Relations3d)occurrence.Relations3d;
+                    foreach (var relation in relation3d) {
+                        Type type = relation.GetType();
+                        // Get the value of the Type proprety via Reflection
+                        SolidEdgeFramework.ObjectType objectType = (SolidEdgeFramework.ObjectType)type.InvokeMember("Type", BindingFlags.GetProperty, null, relation, null);
+                        // Determine the relation type
+                        switch (objectType) {
+                            case SolidEdgeFramework.ObjectType.igGroundRelation3d:
+                                SolidEdgeAssembly.GroundRelation3d groundRelation3d = (SolidEdgeAssembly.GroundRelation3d)relation;
+                                groundRelation3d.Delete();
+                                break;
+                        }
+                    }
+                    Marshal.FinalReleaseComObject(relation3d);
                     Marshal.FinalReleaseComObject(occurrence);
                 } else {
                     ((SolidEdgeAssembly.AssemblyDocument)this.Document).Occurrences.AddWithTransform(fullPathName, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
