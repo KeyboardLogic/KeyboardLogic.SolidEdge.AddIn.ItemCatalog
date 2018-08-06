@@ -17,6 +17,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         private string filePath;
 
         public ItemCatalogEdgeBarController() {
+            log.Info("SolidEdge Version # " + SolidEdgeCommunity.SolidEdgeUtils.GetVersion());
             // Open the configuration file using the dll location
             this.myDllConfig = ConfigurationManager.OpenExeConfiguration(this.GetType().Assembly.Location);
             KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["appSettings"]).Settings;
@@ -24,8 +25,16 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 log.Warn("AppSettings is empty.");
             }
             // Set root folder for mother parts
-            this.rootFolderPath = settings["motherPartFolder"].Value;
+            try {
+                this.rootFolderPath = settings["motherPartFolder"].Value;
+                if (!Directory.Exists(this.rootFolderPath)) {
+                    MessageBox.Show("motherPartFolder: " + this.rootFolderPath + " is not a valid path.\nPlease update the motherPartFolder to reference a valid path.");
+                }
+            } catch (Exception ex) {
+                this.rootFolderPath = Directory.GetCurrentDirectory();
+            }
             this.currentPath = this.rootFolderPath;
+            log.Info("rootFolderPath: " + this.rootFolderPath);
             InitializeComponent();
         }
 
@@ -74,34 +83,39 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// Displays the configuration container used for changing values associated with part properties
         /// </summary>
         private void ShowConfigurationContainer(string filePath) {
-            log.Debug("filePath: " + filePath);
-            this.filePath = filePath;
-            KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["variables"]).Settings;
-            this.partPropertyBindingSource.Clear();
-            // TODO: fix crashing issue from heap corruption when opening part document
-            SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(filePath, 0x00000008);//, "8");
-            this.Document.Application.DoIdle();
-            // Get a reference to the Variables collection.
-            SolidEdgeFramework.Variables variables = (SolidEdgeFramework.Variables)partDocument.Variables;
-            // Get a reference to the variablelist.
-            SolidEdgeFramework.VariableList variableList = (SolidEdgeFramework.VariableList)variables.Query("*", SolidEdgeConstants.VariableNameBy.seVariableNameByBoth, SolidEdgeConstants.VariableVarType.SeVariableVarTypeBoth, false);
-            Marshal.FinalReleaseComObject(variables);
-            PartProperty partProperty = null;
-            foreach (var property in variableList) {
-                partProperty = new PartProperty(property, partDocument.UnitsOfMeasure);
-                if (settings[partProperty.Name] != null) {
-                    log.Debug("property: " + partProperty.Name);
-                    this.partPropertyBindingSource.Add(partProperty);
+            try {
+                log.Debug("filePath: " + filePath);
+                this.filePath = filePath;
+                KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["variables"]).Settings;
+                this.partPropertyBindingSource.Clear();
+                // TODO: fix crashing issue from heap corruption when opening part document
+                SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(filePath, 0x00000008);//, "8");
+                this.Document.Application.DoIdle();
+                // Get a reference to the Variables collection.
+                SolidEdgeFramework.Variables variables = (SolidEdgeFramework.Variables)partDocument.Variables;
+                // Get a reference to the variablelist.
+                SolidEdgeFramework.VariableList variableList = (SolidEdgeFramework.VariableList)variables.Query("*", SolidEdgeConstants.VariableNameBy.seVariableNameByBoth, SolidEdgeConstants.VariableVarType.SeVariableVarTypeBoth, false);
+                Marshal.FinalReleaseComObject(variables);
+                PartProperty partProperty = null;
+                foreach (var property in variableList) {
+                    partProperty = new PartProperty(property, partDocument.UnitsOfMeasure);
+                    if (settings[partProperty.Name] != null) {
+                        log.Debug("partProperty: " + partProperty.Name);
+                        this.partPropertyBindingSource.Add(partProperty);
+                    }
                 }
+                Marshal.FinalReleaseComObject(variableList);
+                // TODO: figure out what causes this to throw "Exception thrown: 'System.MissingMemberException' in Microsoft.VisualBasic.dll"
+                partDocument.Close(false);
+                log.Info("this.Document.Name: " + this.Document.Name);
+                this.Document.Application.DoIdle();
+                Marshal.FinalReleaseComObject(partDocument);
+                partDocument = null;
+                this.edgeBar.Panel2Collapsed = false;
+            } catch (Exception ex) {
+                log.Error("Unable to open solid edge partDocument | " + ex.Message);
             }
-            Marshal.FinalReleaseComObject(variableList);
-            // TODO: figure out what causes this to throw "Exception thrown: 'System.MissingMemberException' in Microsoft.VisualBasic.dll"
-            partDocument.Close(false);
-            log.Info("this.Document.Name: " + this.Document.Name);
-            this.Document.Application.DoIdle();
-            Marshal.FinalReleaseComObject(partDocument);
-            partDocument = null;
-            this.edgeBar.Panel2Collapsed = false;
+            
         }
 
         private void OkButton_Click(object sender, EventArgs e) {
@@ -257,6 +271,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     this.currentPath += "\\" + item.Text;
                     this.currentDirectory.Text = item.Text;
                     this.UpdateDirectories();
+                    this.HideConfigurationContainer();
                 } else if (item.Text != null && File.Exists(this.currentPath + "\\" + item.Text)) {
                     this.ShowConfigurationContainer(this.currentPath + "\\" + item.Text);
                 }

@@ -22,7 +22,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                                                            //SolidEdgeFramework.ISEShortCutMenuEvents // Solid Edge Shortcut Menu Events 
         {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        //private SolidEdgeCommunity.ConnectionPointController _connectionPointController;
 
         /// <summary>
         /// Called when the addin is first loaded by Solid Edge.
@@ -80,13 +79,9 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// Called when Solid Edge raises the SolidEdgeFramework.ISEAddInEdgeBarEvents[Ex].AddPage() event.
         /// </summary>
         public override void OnCreateEdgeBarPage(EdgeBarController controller, SolidEdgeDocument document) {
-            log.Info("Item Catalog: OnCreateEdgeBarPage");
-            // Note: Confirmed with Solid Edge development, OnCreateEdgeBarPage does not get called when Solid Edge is first open and the first document is open.
-            // i.e. Under the hood, SolidEdgeFramework.ISEAddInEdgeBarEvents[Ex].AddPage() is not getting called.
-            // As an alternative, you can call DemoAddIn.Instance.EdgeBarController.Add() in some other event if you need.
+            log.Info("EdgeBarPage Created");
             // Get the document type of the passed in document.
             var documentType = document.Type;
-            
             // Depending on the document type, you may have different edgebar controls.
             switch (documentType) {
                 case DocumentTypeConstants.igAssemblyDocument:
@@ -101,16 +96,14 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             }
         }
 
-
         /// <summary>
         /// Called when regasm.exe is executed against the assembly.
         /// </summary>
         [ComRegisterFunction]
         public static void OnRegister(Type t) {
             string title = "AddIn ItemCatalog";
-            string summary = "Solid Edge Item Catalog Addin in .NET 4.0.";
+            string summary = "Solid Edge Item Catalog AddIn in .NET 4.7.2";
             var enabled = true; // You have the option to register the addin in a disabled state.
-
             // List of environments that your addin supports.
             Guid[] environments = {
                 SolidEdgeSDK.EnvironmentCategories.Application,
@@ -119,10 +112,10 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 
             try {
                 Register(t, title, summary, enabled, environments);
+                log.Info("Item Catalog Registered");
             } catch (Exception ex) {
                 log.Error("Could not register Item Catalog | " + ex.Message);
             }
-            log.Info("Item Catalog Registered");
         }
 
         /// <summary>
@@ -130,8 +123,12 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// </summary>
         [ComUnregisterFunction]
         public static void OnUnregister(Type t) {
-            Unregister(t);
-            log.Info("Item Catalog Unregistered");
+            try {
+                Unregister(t);
+                log.Info("Item Catalog Unregistered");
+            } catch (Exception ex) {
+                log.Error("Could not Unregister Item Catalog | " + ex.Message);
+            }
         }
     }
 }

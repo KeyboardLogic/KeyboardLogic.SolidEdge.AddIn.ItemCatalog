@@ -35,12 +35,12 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.configurationContainer = new System.Windows.Forms.SplitContainer();
             this.partProperties = new System.Windows.Forms.DataGridView();
+            this.partPropertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
             this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.unitsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.partPropertyBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.edgeBar)).BeginInit();
             this.edgeBar.Panel1.SuspendLayout();
             this.edgeBar.Panel2.SuspendLayout();
@@ -203,6 +203,10 @@
             this.partProperties.SelectionChanged += new System.EventHandler(this.PartProperties_SelectionChanged);
             this.partProperties.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PartProperties_KeyPress);
             // 
+            // partPropertyBindingSource
+            // 
+            this.partPropertyBindingSource.DataSource = typeof(KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty);
+            // 
             // cancelButton
             // 
             this.cancelButton.AutoSize = true;
@@ -230,33 +234,31 @@
             this.nameDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.MinimumWidth = 100;
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.ReadOnly = true;
             this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.nameDataGridViewTextBoxColumn.Width = 60;
             // 
             // valueDataGridViewTextBoxColumn
             // 
             this.valueDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
             this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
+            this.valueDataGridViewTextBoxColumn.MinimumWidth = 100;
             this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
             this.valueDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.valueDataGridViewTextBoxColumn.Width = 59;
             // 
             // unitsDataGridViewTextBoxColumn
             // 
             this.unitsDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.unitsDataGridViewTextBoxColumn.DataPropertyName = "Units";
+            this.unitsDataGridViewTextBoxColumn.FillWeight = 75F;
             this.unitsDataGridViewTextBoxColumn.HeaderText = "Units";
+            this.unitsDataGridViewTextBoxColumn.MinimumWidth = 75;
             this.unitsDataGridViewTextBoxColumn.Name = "unitsDataGridViewTextBoxColumn";
             this.unitsDataGridViewTextBoxColumn.ReadOnly = true;
             this.unitsDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.unitsDataGridViewTextBoxColumn.Width = 56;
-            // 
-            // partPropertyBindingSource
-            // 
-            this.partPropertyBindingSource.DataSource = typeof(KeyboardLogic.SolidEdge.AddIn.ItemCatalog.PartProperty);
+            this.unitsDataGridViewTextBoxColumn.Width = 75;
             // 
             // ItemCatalogEdgeBarController
             // 

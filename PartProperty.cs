@@ -56,8 +56,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         public static string GetUnitsOfCurrentMeasure(SolidEdgeFramework.UnitsOfMeasure unitesOfMeasure, int unitsType, double value) {
-            //log.Debug("unitsType: " + unitsType);
-            //log.Debug("value: " + value);
             string result = unitesOfMeasure.FormatUnit(unitsType, value).ToString();
             string[] strArray = result.Split(' ');
             if (strArray.Length == 2 && strArray[0] != "") {
@@ -71,10 +69,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         public static double GetValueofCurrentMeasure(SolidEdgeFramework.UnitsOfMeasure unitesOfMeasure, int unitsType, double value) {
-            //log.Debug("unitsType: " + unitsType);
-            //log.Debug("value: " + value);
             string result = unitesOfMeasure.FormatUnit(unitsType, value).ToString();
-            //log.Debug("FormatedUnit: " + result);
             string[] strArray = result.Split(' ');
             if (strArray.Length == 2 && strArray[0] != "") {
                 result = strArray[0];
