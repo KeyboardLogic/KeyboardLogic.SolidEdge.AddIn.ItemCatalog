@@ -31,6 +31,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     MessageBox.Show("motherPartFolder: " + this.rootFolderPath + " is not a valid path.\nPlease update the motherPartFolder to reference a valid path.");
                 }
             } catch (Exception ex) {
+                log.Warn("motherPartFolder: " + this.rootFolderPath + " is not a valid path.\nPlease update the motherPartFolder to reference a valid path. | " + ex.Message);
                 this.rootFolderPath = Directory.GetCurrentDirectory();
             }
             this.currentPath = this.rootFolderPath;
@@ -107,7 +108,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 Marshal.FinalReleaseComObject(variableList);
                 // TODO: figure out what causes this to throw "Exception thrown: 'System.MissingMemberException' in Microsoft.VisualBasic.dll"
                 partDocument.Close(false);
-                log.Info("this.Document.Name: " + this.Document.Name);
+                log.Debug("this.Document.Name: " + this.Document.Name);
                 this.Document.Application.DoIdle();
                 Marshal.FinalReleaseComObject(partDocument);
                 partDocument = null;
@@ -149,13 +150,11 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                     case SolidEdgeFramework.ObjectType.igDimension:
                                         SolidEdgeFrameworkSupport.Dimension dimension = (SolidEdgeFrameworkSupport.Dimension)property;
                                         dimension.Value = partProperty.GetSolidEdgeStoredValue(partDocument.UnitsOfMeasure);
-                                        log.Info("Value: " + dimension.Value);
                                         Marshal.FinalReleaseComObject(dimension);
                                         break;
                                     case SolidEdgeFramework.ObjectType.igVariable:
                                         SolidEdgeFramework.variable variable = (SolidEdgeFramework.variable)property;
                                         variable.Value = partProperty.GetSolidEdgeStoredValue(partDocument.UnitsOfMeasure);
-                                        log.Info("Value: " + variable.Value);
                                         Marshal.FinalReleaseComObject(variable);
                                         break;
                                 }
@@ -274,42 +273,62 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     this.HideConfigurationContainer();
                 } else if (item.Text != null && File.Exists(this.currentPath + "\\" + item.Text)) {
                     this.ShowConfigurationContainer(this.currentPath + "\\" + item.Text);
+                    //this.partProperties.Focus();
+                    this.partProperties.BeginEdit(true);
                 }
+            }
+        }
+
+        private void SelectNextEditableCell() {
+            try {
+                DataGridViewCell currentCell = this.partProperties.CurrentCell;
+                log.Debug("currentCell: " + currentCell);
+                if (currentCell == null) {
+                    // do nothing
+                } else if (currentCell.ReadOnly) {
+                    DataGridViewCell nextCell = null;
+                    Boolean loopToBegining = true;
+                    int nextRow = currentCell.RowIndex;
+                    int nextCol = currentCell.ColumnIndex;
+                    while (nextCell == null || nextCell.ReadOnly) {
+                        log.Debug("nextCell: " + nextCell);
+                        nextCol = nextCol + 1;
+                        if (nextCol >= this.partProperties.ColumnCount) {
+                            nextCol = 0;
+                            nextRow++;
+                        }
+                        if (loopToBegining && nextRow >= this.partProperties.RowCount) {
+                            nextRow = 0;
+                            loopToBegining = false;
+                        }
+                        nextCell = this.partProperties.Rows[nextRow].Cells[nextCol];
+                        
+                    }
+                    this.partProperties.CurrentCell = nextCell;
+                } else {
+                    log.Debug("currentCell is editable");
+                }
+            } catch (Exception ex) {
+                log.Error(ex.Message);
             }
         }
 
         private void PartProperties_KeyPress(object sender, KeyPressEventArgs e) {
             if (e.KeyChar == (Char)Keys.Enter) {
                 this.OkButton_Click(sender, e);
+            } else if (e.KeyChar == (Char)Keys.Tab) {
+                SelectNextEditableCell();
             }
         }
 
         private void PartProperties_SelectionChanged(object sender, EventArgs e) {
-            log.Info(e.GetType() + ": " + e.ToString());
-            try {
-                DataGridViewCell currentCell = this.partProperties.CurrentCell;
-                if (currentCell != null) {
-                    log.Debug("currentCell: [" + currentCell.RowIndex + ", " + currentCell.ColumnIndex + "]");
-                    int nextRow = currentCell.RowIndex;
-                    int nextCol = currentCell.ColumnIndex;
-                    if (nextCol < 1) {
-                        nextCol = 1;
-                    } else if (nextCol > 1) {
-                        nextCol = 1;
-                        nextRow++;
-                    }
-                    if (nextRow == this.partProperties.RowCount) {
-                        nextRow = 0;
-                    }
-                    DataGridViewCell nextCell = this.partProperties.Rows[nextRow].Cells[nextCol];
-                    if (nextCell != null && nextCell.Visible) {
-                        log.Debug("nextCell: [" + nextCell.RowIndex + ", " + nextCell.ColumnIndex + "]");
-                        this.partProperties.CurrentCell = nextCell;
-                    }
-                }
-            } catch (Exception ex) {
-                log.Error(ex.Message);
-            }
+            SelectNextEditableCell();
+        }
+
+        private void PartProperties_CellEnter(object sender, DataGridViewCellEventArgs e) {
+            DataGridViewCell currentCell = this.partProperties.CurrentCell;
+            log.Debug("PartProperties_CellEnter: currentCell: " + currentCell);
+            //SelectNextEditableCell();
         }
     }
 }
