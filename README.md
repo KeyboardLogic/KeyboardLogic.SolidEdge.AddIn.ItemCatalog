@@ -4,12 +4,12 @@
 1. Download latest zip file
 2. Create folder path `C:\Program Files\ItemCatalog`
 3. Unzip file to the folder path `C:\Program Files\ItemCatalog`
-4. Run `C:\Program Files\ItemCatalog\Registration.bat` with administrator privlages
+4. Run `C:\Program Files\ItemCatalog\Registration.bat` with administrator privileges
 5. Enter `1` for Registration when prompted on screen
 6. Hit any key to close installer
 
 ## Uninstall Instructions
-1. Run `C:\Program Files\ItemCatalog\Registration.bat` with administrator privlages
+1. Run `C:\Program Files\ItemCatalog\Registration.bat` with administrator privileges
 2. Enter `2` for Unregister when prompted on screen
 3. Hit any key to close installer
 4. Delete folder path `C:\Program Files\ItemCatalog`
