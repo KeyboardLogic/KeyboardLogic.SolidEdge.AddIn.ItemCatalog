@@ -1,6 +1,6 @@
 # KeyboardLogic.SolidEdge.AddIn.ItemCatalog
 
-## Install instructions
+## Install Instructions
 1. Download latest zip file
 2. Create folder path `C:\Program Files\ItemCatalog`
 3. Unzip file to the folder path `C:\Program Files\ItemCatalog`
