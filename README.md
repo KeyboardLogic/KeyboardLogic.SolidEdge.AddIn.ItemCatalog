@@ -1,5 +1,19 @@
 # KeyboardLogic.SolidEdge.AddIn.ItemCatalog
 
+## Install instructions
+1. Download latest zip file
+2. Create folder path `C:\Program Files\ItemCatalog`
+3. Unzip file to the folder path `C:\Program Files\ItemCatalog`
+4. Run `C:\Program Files\ItemCatalog\Registration.bat` with administrator privlages
+5. Enter `1` for Registration when prompted on screen
+6. Hit any key to close installer
+
+## Uninstall Instructions
+1. Run `C:\Program Files\ItemCatalog\Registration.bat` with administrator privlages
+2. Enter `2` for Unregister when prompted on screen
+3. Hit any key to close installer
+4. Delete folder path `C:\Program Files\ItemCatalog`
+
 ## Debuggin log file locations
 - Item Catalog log file (.log): installPath\logs
 - Application crash dump file (.dmp): %LOCALAPPDATA%\CrashDumps
