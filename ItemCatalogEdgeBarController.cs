@@ -89,7 +89,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 this.filePath = filePath;
                 KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["variables"]).Settings;
                 this.partPropertyBindingSource.Clear();
-                // TODO: fix crashing issue from heap corruption when opening part document
                 SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(filePath, 0x00000008);//, "8");
                 this.Document.Application.DoIdle();
                 // Get a reference to the Variables collection.
@@ -125,19 +124,22 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             if (this.Document.Path == null || this.Document.Path == "") {
                 MessageBox.Show("You must save the current assembly before adding parts");
             } else {
-                // TODO: fix crashing issue from heap corruption when opening part document
+                KeyValueConfigurationCollection partNameSettings = ((AppSettingsSection)this.myDllConfig.Sections["partName"]).Settings;
+
                 SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(this.filePath, 0x00000008);//, "8");
                 this.Document.Application.DoIdle();
                 log.Debug("partDocument: " + partDocument.Name);
+                // Get file propertys of the partDocument
+                SolidEdgeFramework.Properties objProperties = ((SolidEdgeFramework.PropertySets)partDocument.Properties).Item("Custom");
                 // Handles naming convention when it is not followed
                 int length = partDocument.Name.IndexOf(settings["fileNameToReplace"].Value);
                 if (length <= 0) {
                     length = partDocument.Name.Length - 4;
                 }
                 string fileName = partDocument.Name.Substring(0, length);
-                KeyValueConfigurationCollection partNameSettings = ((AppSettingsSection)this.myDllConfig.Sections["partName"]).Settings;
                 foreach (PartProperty partProperty in this.partPropertyBindingSource) {
                     if (partNameSettings[partProperty.Name] != null && partProperty.Value != 0) {
+                        SolidEdgeFramework.Property objProperty;
                         // Get a reference to the Variables collection.
                         SolidEdgeFramework.Variables variables = (SolidEdgeFramework.Variables)partDocument.Variables;
                         // Get a reference to the variablelist.
@@ -158,8 +160,17 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                         Marshal.FinalReleaseComObject(variable);
                                         break;
                                 }
-                                //TODO: update partDocument values before saving
                                 fileName += "_" + partProperty.Value;
+                                // Update file property
+                                try {
+                                    // TODO: Fix exception when partProperty.Name is not defined in objProperties.Item
+                                    objProperty = objProperties.Item(partProperty.Name);
+                                    objProperty.set_Value(partProperty.Value.ToString());
+                                    Marshal.FinalReleaseComObject(objProperty);
+                                } catch (Exception ex) {
+                                    log.Warn("no file property exists for " + partProperty.Name + " | " + ex.Message);
+                                    //objProperties.Add(partProperty.Name, partProperty.Value);
+                                }
                             } catch (Exception ex) {
                                 log.Error(ex.Message);
                             }
@@ -168,6 +179,8 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                         Marshal.FinalReleaseComObject(variableList);
                     }
                 }
+                objProperties.Save();
+                Marshal.FinalReleaseComObject(objProperties);
                 // Remove invalid fileName characters
                 fileName = string.Join("", fileName.Split(Path.GetInvalidFileNameChars()));
                 log.Debug("fileName: " + fileName);
