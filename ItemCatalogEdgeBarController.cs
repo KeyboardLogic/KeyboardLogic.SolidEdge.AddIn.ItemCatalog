@@ -243,28 +243,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             }
         }
 
-        /**
-        private void Mouse_MouseUp(short sButton, short sShift, double dX, double dY, double dZ, object pWindowDispatch, int lKeyPointType, object pGraphicDispatch) {
-            // Note: Thread.CurrentThread.IsBackground = true so we must Invoke a call back to the main GUI thread.
-            log.Info("MouseUp: " + sButton + ", " + sShift + ", " + dX + ", " + dY + ", " + dZ + ", " + pWindowDispatch + ", " + lKeyPointType + ", " + pGraphicDispatch);
-            //this.OkButton_Click(null, null);
-        }
-
-        private void PartLibrary_ItemDrag(object sender, ItemDragEventArgs e) {
-            log.Info("e.Item: " + e.Item);
-            // Attempt to drag and drop part into diagram
-            SolidEdgeFramework.Command _command = this.Document.Application.CreateCommand((int)SolidEdgeConstants.seCmdFlag.seNoDeactivate);
-            _command.Start();
-            SolidEdgeFramework.Mouse _mouse = _command.Mouse;
-            _mouse.LocateMode = (int)SolidEdgeConstants.seLocateModes.seLocateQuickPick;
-            _mouse.EnabledMove = true;
-            _mouse.EnabledDrag = true;
-            _mouse.ScaleMode = 1;   // Design model coordinates.
-            _mouse.WindowTypes = 1; // Graphic window's only.
-            _mouse.MouseUp += Mouse_MouseUp;
-        }
-        **/
-
         private void PartLibrary_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
             log.Debug("Documents.Count: " + this.Document.Application.Documents.Count);
             log.Info("Item Selection Changed To: " + e.Item.Text);
@@ -342,6 +320,16 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             DataGridViewCell currentCell = this.partProperties.CurrentCell;
             log.Debug("PartProperties_CellEnter: currentCell: " + currentCell);
             //SelectNextEditableCell();
+        }
+
+        private void PartLibrary_MouseDown(object sender, MouseEventArgs e) {
+            log.Info("PartLibrary_MouseDown: filePath: " + this.filePath);
+            if (this.filePath != null) {
+                DataObject dataObject = new DataObject();
+                String[] seFile = new String[] { this.filePath };
+                dataObject.SetData(DataFormats.FileDrop, seFile);
+                this.partLibrary.DoDragDrop(dataObject, DragDropEffects.All);
+            }
         }
     }
 }
