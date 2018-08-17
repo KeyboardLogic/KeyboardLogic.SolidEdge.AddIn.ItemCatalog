@@ -38,9 +38,12 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             log.Info("rootFolderPath: " + this.rootFolderPath);
             InitializeComponent();
         }
-
+        /// <summary>
+        /// Used the default system font.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ControllerLoad(object sender, EventArgs e) {
-            // Trick to use the default system font.
             this.Font = SystemFonts.MessageBoxFont;
         }
 
@@ -124,7 +127,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             if (this.Document.Path == null || this.Document.Path == "") {
                 MessageBox.Show("You must save the current assembly before adding parts");
             } else {
-                KeyValueConfigurationCollection partNameSettings = ((AppSettingsSection)this.myDllConfig.Sections["partName"]).Settings;
+                KeyValueConfigurationCollection partNameSettings = ((AppSettingsSection)this.myDllConfig.Sections["variables"]).Settings;
 
                 SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(this.filePath, 0x00000008);//, "8");
                 this.Document.Application.DoIdle();
@@ -132,13 +135,15 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 // Get file propertys of the partDocument
                 SolidEdgeFramework.Properties objProperties = ((SolidEdgeFramework.PropertySets)partDocument.Properties).Item("Custom");
                 // Handles naming convention when it is not followed
-                int length = partDocument.Name.IndexOf(settings["fileNameToReplace"].Value);
+                int length = partDocument.Name.IndexOf(".par");
                 if (length <= 0) {
-                    length = partDocument.Name.Length - 4;
+                    log.Warn("selected file is not a Part Document");
+                    length = partDocument.Name.Length;
                 }
+                string seperator = settings["fileNameSeperator"].Value;
                 string fileName = partDocument.Name.Substring(0, length);
                 foreach (PartProperty partProperty in this.partPropertyBindingSource) {
-                    if (partNameSettings[partProperty.Name] != null && partProperty.Value != 0) {
+                    if (partNameSettings[partProperty.Name] != null && partNameSettings[partProperty.Name].Value != "" && partNameSettings[partProperty.Name].Value != null) {
                         SolidEdgeFramework.Property objProperty;
                         // Get a reference to the Variables collection.
                         SolidEdgeFramework.Variables variables = (SolidEdgeFramework.Variables)partDocument.Variables;
@@ -160,7 +165,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                         Marshal.FinalReleaseComObject(variable);
                                         break;
                                 }
-                                fileName += "_" + partProperty.Value;
+                                fileName += seperator + partProperty.Value + " " + partProperty.Units;
                                 // Update file property
                                 try {
                                     // TODO: Fix exception when partProperty.Name is not defined in objProperties.Item
@@ -169,7 +174,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                     Marshal.FinalReleaseComObject(objProperty);
                                 } catch (Exception ex) {
                                     log.Warn("no file property exists for " + partProperty.Name + " | " + ex.Message);
-                                    //objProperties.Add(partProperty.Name, partProperty.Value);
                                 }
                             } catch (Exception ex) {
                                 log.Error(ex.Message);
@@ -193,7 +197,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 }
                 fullPathName += "\\" + fileName + ".par";
                 log.Debug("fullPathName: " + fullPathName);
-                //fullPathName = partDocument.FullName;
                 partDocument.SaveCopyAs(fullPathName);
                 this.Document.Application.DoIdle();
                 partDocument.Close(false);
@@ -244,8 +247,8 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void PartLibrary_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
-            log.Debug("Documents.Count: " + this.Document.Application.Documents.Count);
-            log.Info("Item Selection Changed To: " + e.Item.Text);
+            log.Debug("ItemSelectionChanged: Documents.Count: " + this.Document.Application.Documents.Count);
+            log.Info("ItemSelectionChanged: e.Item.Text: " + e.Item.Text);
             if (e.Item.Text != null && File.Exists(this.currentPath + "\\" + e.Item.Text)) { // Display preview of part
                 // TODO: display preview of selected part
                 this.ShowConfigurationContainer(this.currentPath + "\\" + e.Item.Text);
@@ -264,9 +267,18 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     this.HideConfigurationContainer();
                 } else if (item.Text != null && File.Exists(this.currentPath + "\\" + item.Text)) {
                     this.ShowConfigurationContainer(this.currentPath + "\\" + item.Text);
-                    //this.partProperties.Focus();
                     this.partProperties.BeginEdit(true);
                 }
+            }
+        }
+
+        private void PartLibrary_MouseDown(object sender, MouseEventArgs e) {
+            log.Info("PartLibrary_MouseDown: filePath: " + this.filePath);
+            if (this.filePath != null) {
+                DataObject dataObject = new DataObject();
+                String[] seFile = new String[] { this.filePath };
+                dataObject.SetData(DataFormats.FileDrop, seFile);
+                this.partLibrary.DoDragDrop(dataObject, DragDropEffects.All);
             }
         }
 
@@ -320,16 +332,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             DataGridViewCell currentCell = this.partProperties.CurrentCell;
             log.Debug("PartProperties_CellEnter: currentCell: " + currentCell);
             //SelectNextEditableCell();
-        }
-
-        private void PartLibrary_MouseDown(object sender, MouseEventArgs e) {
-            log.Info("PartLibrary_MouseDown: filePath: " + this.filePath);
-            if (this.filePath != null) {
-                DataObject dataObject = new DataObject();
-                String[] seFile = new String[] { this.filePath };
-                dataObject.SetData(DataFormats.FileDrop, seFile);
-                this.partLibrary.DoDragDrop(dataObject, DragDropEffects.All);
-            }
         }
     }
 }

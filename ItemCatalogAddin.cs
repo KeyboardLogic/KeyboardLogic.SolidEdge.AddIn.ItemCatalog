@@ -12,15 +12,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     [ComVisible(true)]
     [Guid("B440CD64-4926-446A-AA6E-A5115E21F43D")] // Must be unique!
     [ProgId("KeyboardLogic.SolidEdge.AddIn.ItemCatalog")] // Must be unique!
-    public class ItemCatalogAddIn : SolidEdgeCommunity.AddIn.SolidEdgeAddIn // Solid Edge Community provided base class.
-                                                                           //SolidEdgeFramework.ISEApplicationEvents,  // Solid Edge Application Events
-                                                                           //SolidEdgeFramework.ISEApplicationWindowEvents, // Solid Edge Window Events
-                                                                           //SolidEdgeFramework.ISEFeatureLibraryEvents, // Solid Edge Feature Library Events
-                                                                           //SolidEdgeFramework.ISEFileUIEvents, // Solid Egde File UI Eventss
-                                                                           //SolidEdgeFramework.ISENewFileUIEvents, // Solid Egde New File UI Events
-                                                                           //SolidEdgeFramework.ISEECEvents, // Solid Edge EC Events
-                                                                           //SolidEdgeFramework.ISEShortCutMenuEvents // Solid Edge Shortcut Menu Events 
-        {
+    public class ItemCatalogAddIn : SolidEdgeCommunity.AddIn.SolidEdgeAddIn {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -31,34 +23,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             // If you makes changes to your ribbon, be sure to increment the GuiVersion or your ribbon
             // will not initialize properly.
             AddInEx.GuiVersion = 1;
-            try {
-                // Create an instance of the default connection point controller. It helps manage connections to COM events.
-                //_connectionPointController = new SolidEdgeCommunity.ConnectionPointController(this);
-
-                // Uncomment the following line to attach to the Solid Edge Application Events.
-                //_connectionPointController.AdviseSink<SolidEdgeFramework.ISEApplicationEvents>(this.Application);
-
-                // Not necessary unless you absolutely need to see low level windows messages.
-                // Uncomment the following line to attach to the Solid Edge Application Window Events.
-                //_connectionPointController.AdviseSink<SolidEdgeFramework.ISEApplicationWindowEvents>(this.Application);
-
-                // Uncomment the following line to attach to the Solid Edge Feature Library Events.
-                //_connectionPointController.AdviseSink<SolidEdgeFramework.ISEFeatureLibraryEvents>(this.Application);
-
-                // Uncomment the following line to attach to the Solid Edge File UI Events.
-                //_connectionPointController.AdviseSink<SolidEdgeFramework.ISEFileUIEvents>(this.Application);
-
-                // Uncomment the following line to attach to the Solid Edge File New UI Events.
-                //_connectionPointController.AdviseSink<SolidEdgeFramework.ISENewFileUIEvents>(this.Application);
-
-                // Uncomment the following line to attach to the Solid Edge EC Events.
-                //_connectionPointController.AdviseSink<SolidEdgeFramework.ISEECEvents>(this.Application);
-
-                // Uncomment the following line to attach to the Solid Edge Shortcut Menu Events.
-                //_connectionPointController.AdviseSink<SolidEdgeFramework.ISEShortCutMenuEvents>(this.Application);
-            } catch (Exception ex) {
-                log.Error(ex.Message);
-            }
         }
 
         /// <summary>
