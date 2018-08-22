@@ -15,7 +15,7 @@
 4. Delete folder path `C:\Program Files\ItemCatalog`
 
 ## Debuggin log file locations
-- Item Catalog log file (.log): installPath\logs
+- Item Catalog log file (.log): %APPDATA%\Keyboard Logic\ItemCatalog\logs
 - Application crash dump file (.dmp): %LOCALAPPDATA%\CrashDumps
 - Additional location examples
 	C:\Users\eheyder\AppData\Local\Temp\crashlogf.dmp

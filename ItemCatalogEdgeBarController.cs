@@ -48,7 +48,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void ControllerAfterInitialize(object sender, EventArgs e) {
-            log.Info("After Initilization: Started");
+            log.Info("After Initialization: Started");
             // Register with OLE to handle concurrency issues on the current thread.
             SolidEdgeCommunity.OleMessageFilter.Register();
             // These properties are not initialized until AfterInitialize is called.
@@ -62,7 +62,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             this.HideConfigurationContainer();
             this.currentDirectory.Text = this.currentPath.Substring(this.currentPath.LastIndexOf("\\") + 1);
             this.UpdateDirectories();
-            log.Info("After Initilization: Complete");
+            log.Info("After Initialization: Complete");
         }
 
         private void UpdateDirectories() {
@@ -140,7 +140,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     log.Warn("selected file is not a Part Document");
                     length = partDocument.Name.Length;
                 }
-                string seperator = settings["fileNameSeperator"].Value;
+                string separator = settings["fileNameSeparator"].Value;
                 string fileName = partDocument.Name.Substring(0, length);
                 foreach (PartProperty partProperty in this.partPropertyBindingSource) {
                     if (partNameSettings[partProperty.Name] != null && partNameSettings[partProperty.Name].Value != "" && partNameSettings[partProperty.Name].Value != null) {
@@ -165,7 +165,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                         Marshal.FinalReleaseComObject(variable);
                                         break;
                                 }
-                                fileName += seperator + partProperty.Value + " " + partProperty.Units;
+                                fileName += separator + partProperty.Value + " " + partProperty.Units;
                                 // Update file property
                                 try {
                                     // TODO: Fix exception when partProperty.Name is not defined in objProperties.Item
@@ -259,7 +259,9 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 
         private void PartLibrary_DoubleClick(object sender, EventArgs e) {
             log.Debug("DoubleClick: Documents.Count: " + this.Document.Application.Documents.Count);
+            log.Debug("DoubleClick: currentPath" + this.currentPath);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
+                log.Info("DoubleClick: Item.Text: " + item.Text);
                 if (item.Text != null && Directory.Exists(this.currentPath + "\\" + item.Text)) {
                     this.currentPath += "\\" + item.Text;
                     this.currentDirectory.Text = item.Text;
@@ -273,12 +275,15 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void PartLibrary_MouseDown(object sender, MouseEventArgs e) {
-            log.Info("PartLibrary_MouseDown: filePath: " + this.filePath);
+            log.Debug("PartLibrary_MouseDown: filePath: " + this.filePath);
             if (this.filePath != null) {
                 DataObject dataObject = new DataObject();
                 String[] seFile = new String[] { this.filePath };
-                dataObject.SetData(DataFormats.FileDrop, seFile);
-                this.partLibrary.DoDragDrop(dataObject, DragDropEffects.All);
+                // Commented out to fix issue with code crashing
+                // Cannot DoDragDrop without causing DoubleClick becoming disabled
+                // TODO: fix drag and drop
+//                dataObject.SetData(DataFormats.FileDrop, seFile);
+//                this.partLibrary.DoDragDrop(dataObject, DragDropEffects.All);
             }
         }
 
@@ -290,7 +295,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     // do nothing
                 } else if (currentCell.ReadOnly) {
                     DataGridViewCell nextCell = null;
-                    Boolean loopToBegining = true;
+                    Boolean loopToBeginning = true;
                     int nextRow = currentCell.RowIndex;
                     int nextCol = currentCell.ColumnIndex;
                     while (nextCell == null || nextCell.ReadOnly) {
@@ -300,9 +305,9 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                             nextCol = 0;
                             nextRow++;
                         }
-                        if (loopToBegining && nextRow >= this.partProperties.RowCount) {
+                        if (loopToBeginning && nextRow >= this.partProperties.RowCount) {
                             nextRow = 0;
-                            loopToBegining = false;
+                            loopToBeginning = false;
                         }
                         nextCell = this.partProperties.Rows[nextRow].Cells[nextCol];
                         
@@ -317,10 +322,15 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void PartProperties_KeyPress(object sender, KeyPressEventArgs e) {
-            if (e.KeyChar == (Char)Keys.Enter) {
-                this.OkButton_Click(sender, e);
-            } else if (e.KeyChar == (Char)Keys.Tab) {
-                SelectNextEditableCell();
+            switch (e.KeyChar) {
+                case (Char)Keys.Enter:
+                    this.OkButton_Click(sender, e);
+                    break;
+                case (Char)Keys.Tab:
+                    SelectNextEditableCell();
+                    break;
+                default:
+                    break;
             }
         }
 
