@@ -10,45 +10,44 @@ using log4net;
 
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     public partial class ItemCatalogEdgeBarController : EdgeBarControl {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private Configuration myDllConfig;
-        private string rootFolderPath;
-        private string currentPath;
-        private string filePath;
+        private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        private readonly Configuration _myDllConfig;
+        private readonly string _rootFolderPath;
+        private string _currentPath;
+        private string _filePath;
 
         public ItemCatalogEdgeBarController() {
-            log.Info("SolidEdge Version # " + SolidEdgeCommunity.SolidEdgeUtils.GetVersion());
+            Log.Info("SolidEdge Version # " + SolidEdgeCommunity.SolidEdgeUtils.GetVersion());
             // Open the configuration file using the dll location
-            this.myDllConfig = ConfigurationManager.OpenExeConfiguration(this.GetType().Assembly.Location);
-            KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["appSettings"]).Settings;
+            this._myDllConfig = ConfigurationManager.OpenExeConfiguration(this.GetType().Assembly.Location);
+            KeyValueConfigurationCollection settings = ((AppSettingsSection)this._myDllConfig.Sections["appSettings"]).Settings;
             if (settings.Count == 0) {
-                log.Warn("AppSettings is empty.");
+                Log.Warn("AppSettings is empty.");
             }
             // Set root folder for mother parts
             try {
-                this.rootFolderPath = settings["motherPartFolder"].Value;
-                if (!Directory.Exists(this.rootFolderPath)) {
-                    MessageBox.Show("motherPartFolder: " + this.rootFolderPath + " is not a valid path.\nPlease update the motherPartFolder to reference a valid path.");
+                this._rootFolderPath = settings["motherPartFolder"].Value;
+                if (!Directory.Exists(this._rootFolderPath)) {
+                    MessageBox.Show("motherPartFolder: " + this._rootFolderPath + " is not a valid path.\nPlease update the motherPartFolder to reference a valid path.");
                 }
             } catch (Exception ex) {
-                log.Warn("motherPartFolder: " + this.rootFolderPath + " is not a valid path.\nPlease update the motherPartFolder to reference a valid path. | " + ex.Message);
-                this.rootFolderPath = Directory.GetCurrentDirectory();
+                Log.Warn("motherPartFolder: " + this._rootFolderPath + " is not a valid path.\nPlease update the motherPartFolder to reference a valid path. | " + ex.Message);
+                this._rootFolderPath = Directory.GetCurrentDirectory();
             }
-            this.currentPath = this.rootFolderPath;
-            log.Info("rootFolderPath: " + this.rootFolderPath);
+            this._currentPath = this._rootFolderPath;
+            Log.Info("rootFolderPath: " + this._rootFolderPath);
             InitializeComponent();
         }
+
         /// <summary>
         /// Used the default system font.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void ControllerLoad(object sender, EventArgs e) {
             this.Font = SystemFonts.MessageBoxFont;
         }
 
         private void ControllerAfterInitialize(object sender, EventArgs e) {
-            log.Info("After Initialization: Started");
+            Log.Info("After Initialization: Started");
             // Register with OLE to handle concurrency issues on the current thread.
             SolidEdgeCommunity.OleMessageFilter.Register();
             // These properties are not initialized until AfterInitialize is called.
@@ -60,17 +59,17 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 }
             }
             this.HideConfigurationContainer();
-            this.currentDirectory.Text = this.currentPath.Substring(this.currentPath.LastIndexOf("\\") + 1);
+            this.currentDirectory.Text = this._currentPath.Substring(this._currentPath.LastIndexOf("\\") + 1);
             this.UpdateDirectories();
-            log.Info("After Initialization: Complete");
+            Log.Info("After Initialization: Complete");
         }
 
         private void UpdateDirectories() {
             this.partLibrary.Items.Clear();
-            foreach (string str in Directory.GetDirectories(this.currentPath)) {
+            foreach (var str in Directory.GetDirectories(this._currentPath)) {
                 this.partLibrary.Items.Add(Path.GetFileName(str), 0);
             }
-            foreach (string str in Directory.GetFiles(this.currentPath, "*.par")) {
+            foreach (var str in Directory.GetFiles(this._currentPath, "*.par")) {
                 this.partLibrary.Items.Add(Path.GetFileName(str), 1);
             }
         }
@@ -88,66 +87,65 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         /// </summary>
         private void ShowConfigurationContainer(string filePath) {
             try {
-                log.Debug("filePath: " + filePath);
-                this.filePath = filePath;
-                KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["variables"]).Settings;
+                Log.Debug("filePath: " + filePath);
+                this._filePath = filePath;
+                KeyValueConfigurationCollection settings = ((AppSettingsSection)this._myDllConfig.Sections["variables"]).Settings;
                 this.partPropertyBindingSource.Clear();
                 SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(filePath, 0x00000008);//, "8");
                 this.Document.Application.DoIdle();
                 // Get a reference to the Variables collection.
                 SolidEdgeFramework.Variables variables = (SolidEdgeFramework.Variables)partDocument.Variables;
-                // Get a reference to the variablelist.
+                // Get a reference to the variableList.
                 SolidEdgeFramework.VariableList variableList = (SolidEdgeFramework.VariableList)variables.Query("*", SolidEdgeConstants.VariableNameBy.seVariableNameByBoth, SolidEdgeConstants.VariableVarType.SeVariableVarTypeBoth, false);
                 Marshal.FinalReleaseComObject(variables);
                 PartProperty partProperty = null;
                 foreach (var property in variableList) {
                     partProperty = new PartProperty(property, partDocument.UnitsOfMeasure);
                     if (settings[partProperty.Name] != null) {
-                        log.Debug("partProperty: " + partProperty.Name);
+                        Log.Debug("partProperty: " + partProperty.Name);
                         this.partPropertyBindingSource.Add(partProperty);
                     }
                 }
                 Marshal.FinalReleaseComObject(variableList);
                 // TODO: figure out what causes this to throw "Exception thrown: 'System.MissingMemberException' in Microsoft.VisualBasic.dll"
                 partDocument.Close(false);
-                log.Debug("this.Document.Name: " + this.Document.Name);
+                Log.Debug("this.Document.Name: " + this.Document.Name);
                 this.Document.Application.DoIdle();
                 Marshal.FinalReleaseComObject(partDocument);
-                partDocument = null;
                 this.edgeBar.Panel2Collapsed = false;
             } catch (Exception ex) {
-                log.Error("Unable to open solid edge partDocument | " + ex.Message);
+                Log.Error("Unable to open solid edge partDocument | " + ex.Message);
             }
             
         }
 
         private void OkButton_Click(object sender, EventArgs e) {
-            KeyValueConfigurationCollection settings = ((AppSettingsSection)this.myDllConfig.Sections["appSettings"]).Settings;
-            log.Debug("assemblyDocument: " + this.Document.Name + " path: " + this.Document.Path);
-            if (this.Document.Path == null || this.Document.Path == "") {
+            KeyValueConfigurationCollection settings = ((AppSettingsSection)this._myDllConfig.Sections["appSettings"]).Settings;
+            Log.Debug("assemblyDocument: " + this.Document.Name + " path: " + this.Document.Path);
+            if (string.IsNullOrEmpty(this.Document.Path)) {
                 MessageBox.Show("You must save the current assembly before adding parts");
             } else {
-                KeyValueConfigurationCollection partNameSettings = ((AppSettingsSection)this.myDllConfig.Sections["variables"]).Settings;
+                KeyValueConfigurationCollection partNameSettings = ((AppSettingsSection)this._myDllConfig.Sections["variables"]).Settings;
 
-                SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(this.filePath, 0x00000008);//, "8");
+                SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(this._filePath, 0x00000008);//, "8");
                 this.Document.Application.DoIdle();
-                log.Debug("partDocument: " + partDocument.Name);
+                Log.Debug("partDocument: " + partDocument.Name);
                 // Get file propertys of the partDocument
                 SolidEdgeFramework.Properties objProperties = ((SolidEdgeFramework.PropertySets)partDocument.Properties).Item("Custom");
                 // Handles naming convention when it is not followed
                 int length = partDocument.Name.IndexOf(".par");
                 if (length <= 0) {
-                    log.Warn("selected file is not a Part Document");
+                    Log.Warn("selected file is not a Part Document");
                     length = partDocument.Name.Length;
                 }
                 string separator = settings["fileNameSeparator"].Value;
                 string fileName = partDocument.Name.Substring(0, length);
                 foreach (PartProperty partProperty in this.partPropertyBindingSource) {
-                    if (partNameSettings[partProperty.Name] != null && partNameSettings[partProperty.Name].Value != "" && partNameSettings[partProperty.Name].Value != null) {
+                    if (partNameSettings[partProperty.Name] != null && !string.IsNullOrEmpty(partNameSettings[partProperty.Name].Value)) {
                         SolidEdgeFramework.Property objProperty;
                         // Get a reference to the Variables collection.
                         SolidEdgeFramework.Variables variables = (SolidEdgeFramework.Variables)partDocument.Variables;
-                        // Get a reference to the variablelist.
+                        // Get a reference to the variableList.
                         SolidEdgeFramework.VariableList variableList = (SolidEdgeFramework.VariableList)variables.Query(partProperty.Name, SolidEdgeConstants.VariableNameBy.seVariableNameByBoth, SolidEdgeConstants.VariableVarType.SeVariableVarTypeBoth, false);
                         foreach (var property in variableList) {
                             try {
@@ -173,10 +171,10 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                     objProperty.set_Value(partProperty.Value.ToString());
                                     Marshal.FinalReleaseComObject(objProperty);
                                 } catch (Exception ex) {
-                                    log.Warn("no file property exists for " + partProperty.Name + " | " + ex.Message);
+                                    Log.Warn("no file property exists for " + partProperty.Name + " | " + ex.Message);
                                 }
                             } catch (Exception ex) {
-                                log.Error(ex.Message);
+                                Log.Error(ex.Message);
                             }
                         }
                         Marshal.FinalReleaseComObject(variables);
@@ -187,7 +185,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 Marshal.FinalReleaseComObject(objProperties);
                 // Remove invalid fileName characters
                 fileName = string.Join("", fileName.Split(Path.GetInvalidFileNameChars()));
-                log.Debug("fileName: " + fileName);
+                Log.Debug("fileName: " + fileName);
                 string fullPathName = this.Document.Path;
                 string assemblyPartFolderName = settings["assemblyPartFolderName"].Value;
                 if (assemblyPartFolderName != null & assemblyPartFolderName != "") {
@@ -196,7 +194,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     Directory.CreateDirectory(fullPathName);
                 }
                 fullPathName += "\\" + fileName + ".par";
-                log.Debug("fullPathName: " + fullPathName);
+                Log.Debug("fullPathName: " + fullPathName);
                 partDocument.SaveCopyAs(fullPathName);
                 this.Document.Application.DoIdle();
                 partDocument.Close(false);
@@ -237,48 +235,49 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void BackButton_Click(object sender, EventArgs e) {
-            int index = this.currentPath.LastIndexOf("\\");
-            if (index >= this.rootFolderPath.Length) {
-                string[] folders = this.currentPath.Split('\\');
+            int index = this._currentPath.LastIndexOf("\\");
+            if (index >= this._rootFolderPath.Length) {
+                string[] folders = this._currentPath.Split('\\');
                 this.currentDirectory.Text = folders[folders.Length - 2];
-                this.currentPath = this.currentPath.Substring(0, index);
+                this._currentPath = this._currentPath.Substring(0, index);
                 this.UpdateDirectories();
             }
         }
 
+        #region PartLibrary
         private void PartLibrary_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e) {
-            log.Debug("ItemSelectionChanged: Documents.Count: " + this.Document.Application.Documents.Count);
-            log.Info("ItemSelectionChanged: e.Item.Text: " + e.Item.Text);
-            if (e.Item.Text != null && File.Exists(this.currentPath + "\\" + e.Item.Text)) { // Display preview of part
+            Log.Debug("ItemSelectionChanged: Documents.Count: " + this.Document.Application.Documents.Count);
+            Log.Info("ItemSelectionChanged: e.Item.Text: " + e.Item.Text);
+            if (e.Item.Text != null && File.Exists(this._currentPath + "\\" + e.Item.Text)) { // Display preview of part
                 // TODO: display preview of selected part
-                this.ShowConfigurationContainer(this.currentPath + "\\" + e.Item.Text);
+                this.ShowConfigurationContainer(this._currentPath + "\\" + e.Item.Text);
             } else {
                 this.HideConfigurationContainer();
             }
         }
 
         private void PartLibrary_DoubleClick(object sender, EventArgs e) {
-            log.Debug("DoubleClick: Documents.Count: " + this.Document.Application.Documents.Count);
-            log.Debug("DoubleClick: currentPath" + this.currentPath);
+            Log.Debug("DoubleClick: Documents.Count: " + this.Document.Application.Documents.Count);
+            Log.Debug("DoubleClick: currentPath" + this._currentPath);
             foreach (ListViewItem item in this.partLibrary.SelectedItems) {
-                log.Info("DoubleClick: Item.Text: " + item.Text);
-                if (item.Text != null && Directory.Exists(this.currentPath + "\\" + item.Text)) {
-                    this.currentPath += "\\" + item.Text;
+                Log.Info("DoubleClick: Item.Text: " + item.Text);
+                if (item.Text != null && Directory.Exists(this._currentPath + "\\" + item.Text)) {
+                    this._currentPath += "\\" + item.Text;
                     this.currentDirectory.Text = item.Text;
                     this.UpdateDirectories();
                     this.HideConfigurationContainer();
-                } else if (item.Text != null && File.Exists(this.currentPath + "\\" + item.Text)) {
-                    this.ShowConfigurationContainer(this.currentPath + "\\" + item.Text);
+                } else if (item.Text != null && File.Exists(this._currentPath + "\\" + item.Text)) {
+                    this.ShowConfigurationContainer(this._currentPath + "\\" + item.Text);
                     this.partProperties.BeginEdit(true);
                 }
             }
         }
 
         private void PartLibrary_MouseDown(object sender, MouseEventArgs e) {
-            log.Debug("PartLibrary_MouseDown: filePath: " + this.filePath);
-            if (this.filePath != null) {
+            Log.Debug("PartLibrary_MouseDown: filePath: " + this._filePath);
+            if (this._filePath != null) {
                 DataObject dataObject = new DataObject();
-                String[] seFile = new String[] { this.filePath };
+                String[] seFile = new String[] { this._filePath };
                 // Commented out to fix issue with code crashing
                 // Cannot DoDragDrop without causing DoubleClick becoming disabled
                 // TODO: fix drag and drop
@@ -286,11 +285,26 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 //                this.partLibrary.DoDragDrop(dataObject, DragDropEffects.All);
             }
         }
+        #endregion
 
-        private void SelectNextEditableCell() {
+        #region PartProperties
+        private void PartProperties_KeyPress(object sender, KeyPressEventArgs e) {
+            switch (e.KeyChar) {
+                case (char)Keys.Enter:
+                    this.OkButton_Click(sender, e);
+                    break;
+                case (char)Keys.Tab:
+                    PartProperties_SelectionChanged(sender, e);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void PartProperties_SelectionChanged(object sender, EventArgs e) {
             try {
                 DataGridViewCell currentCell = this.partProperties.CurrentCell;
-                log.Debug("currentCell: " + currentCell);
+                Log.Debug("currentCell: " + currentCell);
                 if (currentCell == null) {
                     // do nothing
                 } else if (currentCell.ReadOnly) {
@@ -299,7 +313,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     int nextRow = currentCell.RowIndex;
                     int nextCol = currentCell.ColumnIndex;
                     while (nextCell == null || nextCell.ReadOnly) {
-                        log.Debug("nextCell: " + nextCell);
+                        Log.Debug("nextCell: " + nextCell);
                         nextCol = nextCol + 1;
                         if (nextCol >= this.partProperties.ColumnCount) {
                             nextCol = 0;
@@ -310,38 +324,22 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                             loopToBeginning = false;
                         }
                         nextCell = this.partProperties.Rows[nextRow].Cells[nextCol];
-                        
+
                     }
                     this.partProperties.CurrentCell = nextCell;
                 } else {
-                    log.Debug("currentCell is editable");
+                    Log.Debug("currentCell is editable");
                 }
             } catch (Exception ex) {
-                log.Error(ex.Message);
+                Log.Error(ex.Message);
             }
-        }
-
-        private void PartProperties_KeyPress(object sender, KeyPressEventArgs e) {
-            switch (e.KeyChar) {
-                case (Char)Keys.Enter:
-                    this.OkButton_Click(sender, e);
-                    break;
-                case (Char)Keys.Tab:
-                    SelectNextEditableCell();
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void PartProperties_SelectionChanged(object sender, EventArgs e) {
-            SelectNextEditableCell();
         }
 
         private void PartProperties_CellEnter(object sender, DataGridViewCellEventArgs e) {
             DataGridViewCell currentCell = this.partProperties.CurrentCell;
-            log.Debug("PartProperties_CellEnter: currentCell: " + currentCell);
+            Log.Debug("PartProperties_CellEnter: currentCell: " + currentCell);
             //SelectNextEditableCell();
         }
+        #endregion
     }
 }
