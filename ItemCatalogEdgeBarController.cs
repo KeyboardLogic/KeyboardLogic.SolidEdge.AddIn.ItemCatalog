@@ -11,7 +11,7 @@ using log4net;
 namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     public partial class ItemCatalogEdgeBarController : EdgeBarControl {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        private readonly Configuration _myDllConfig;
+        private readonly Settings _settings;
         private readonly string _rootFolderPath;
         private string _currentPath;
         private string _filePath;
@@ -19,21 +19,8 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         public ItemCatalogEdgeBarController() {
             Log.Info("SolidEdge Version # " + SolidEdgeCommunity.SolidEdgeUtils.GetVersion());
             // Open the configuration file using the dll location
-            this._myDllConfig = ConfigurationManager.OpenExeConfiguration(this.GetType().Assembly.Location);
-            KeyValueConfigurationCollection settings = ((AppSettingsSection)this._myDllConfig.Sections["appSettings"]).Settings;
-            if (settings.Count == 0) {
-                Log.Warn("AppSettings is empty.");
-            }
-            // Set root folder for mother parts
-            try {
-                this._rootFolderPath = settings["motherPartFolder"].Value;
-                if (!Directory.Exists(this._rootFolderPath)) {
-                    MessageBox.Show("motherPartFolder: " + this._rootFolderPath + " is not a valid path.\nPlease update the motherPartFolder to reference a valid path.");
-                }
-            } catch (Exception ex) {
-                Log.Warn("motherPartFolder: " + this._rootFolderPath + " is not a valid path.\nPlease update the motherPartFolder to reference a valid path. | " + ex.Message);
-                this._rootFolderPath = Directory.GetCurrentDirectory();
-            }
+            this._settings = new Settings(ConfigurationManager.OpenExeConfiguration(this.GetType().Assembly.Location));
+            this._rootFolderPath = this._settings.getRootFolder();
             this._currentPath = this._rootFolderPath;
             Log.Info("rootFolderPath: " + this._rootFolderPath);
             InitializeComponent();
@@ -89,7 +76,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             try {
                 Log.Debug("filePath: " + filePath);
                 this._filePath = filePath;
-                KeyValueConfigurationCollection settings = ((AppSettingsSection)this._myDllConfig.Sections["variables"]).Settings;
                 this.partPropertyBindingSource.Clear();
                 SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(filePath, 0x00000008);//, "8");
                 this.Document.Application.DoIdle();
@@ -101,7 +87,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 PartProperty partProperty = null;
                 foreach (var property in variableList) {
                     partProperty = new PartProperty(property, partDocument.UnitsOfMeasure);
-                    if (settings[partProperty.Name] != null) {
+                    if (this._settings.isVariableDefined(partProperty.Name)) {
                         Log.Debug("partProperty: " + partProperty.Name);
                         this.partPropertyBindingSource.Add(partProperty);
                     }
@@ -120,13 +106,10 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
         }
 
         private void OkButton_Click(object sender, EventArgs e) {
-            KeyValueConfigurationCollection settings = ((AppSettingsSection)this._myDllConfig.Sections["appSettings"]).Settings;
             Log.Debug("assemblyDocument: " + this.Document.Name + " path: " + this.Document.Path);
             if (string.IsNullOrEmpty(this.Document.Path)) {
                 MessageBox.Show("You must save the current assembly before adding parts");
             } else {
-                KeyValueConfigurationCollection partNameSettings = ((AppSettingsSection)this._myDllConfig.Sections["variables"]).Settings;
-
                 SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(this._filePath, 0x00000008);//, "8");
                 this.Document.Application.DoIdle();
                 Log.Debug("partDocument: " + partDocument.Name);
@@ -138,10 +121,9 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     Log.Warn("selected file is not a Part Document");
                     length = partDocument.Name.Length;
                 }
-                string separator = settings["fileNameSeparator"].Value;
                 string fileName = partDocument.Name.Substring(0, length);
                 foreach (PartProperty partProperty in this.partPropertyBindingSource) {
-                    if (partNameSettings[partProperty.Name] != null && !string.IsNullOrEmpty(partNameSettings[partProperty.Name].Value)) {
+                    if (this._settings.isVariableDefined(partProperty.Name)) {
                         SolidEdgeFramework.Property objProperty;
                         // Get a reference to the Variables collection.
                         SolidEdgeFramework.Variables variables = (SolidEdgeFramework.Variables)partDocument.Variables;
@@ -163,7 +145,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                         Marshal.FinalReleaseComObject(variable);
                                         break;
                                 }
-                                fileName += separator + partProperty.Value + " " + partProperty.Units;
+                                fileName += this._settings.getFileNameSeparator() + partProperty.Value + " " + partProperty.Units;
                                 // Update file property
                                 try {
                                     // TODO: Fix exception when partProperty.Name is not defined in objProperties.Item
@@ -187,7 +169,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 fileName = string.Join("", fileName.Split(Path.GetInvalidFileNameChars()));
                 Log.Debug("fileName: " + fileName);
                 string fullPathName = this.Document.Path;
-                string assemblyPartFolderName = settings["assemblyPartFolderName"].Value;
+                string assemblyPartFolderName = _settings.getAssemblyPartFolderName();
                 if (assemblyPartFolderName != null & assemblyPartFolderName != "") {
                     assemblyPartFolderName = string.Join("", assemblyPartFolderName.Split(Path.GetInvalidFileNameChars()));
                     fullPathName += "\\" + assemblyPartFolderName;
