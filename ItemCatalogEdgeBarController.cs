@@ -195,7 +195,11 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 }
                 fullPathName += "\\" + fileName + ".par";
                 Log.Debug("fullPathName: " + fullPathName);
-                partDocument.SaveCopyAs(fullPathName);
+
+                if (!File.Exists(fullPathName)) {
+                    partDocument.SaveCopyAs(fullPathName);
+                }
+                
                 this.Document.Application.DoIdle();
                 partDocument.Close(false);
                 this.Document.Application.DoIdle();
