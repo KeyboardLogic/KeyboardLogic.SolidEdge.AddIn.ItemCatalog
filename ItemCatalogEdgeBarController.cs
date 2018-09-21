@@ -12,7 +12,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     public partial class ItemCatalogEdgeBarController : EdgeBarControl {
         private static readonly ILog Log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly Settings _settings;
-        private readonly string _rootFolderPath;
         private string _currentPath;
         private string _filePath;
 
@@ -20,9 +19,8 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             Log.Info("SolidEdge Version # " + SolidEdgeCommunity.SolidEdgeUtils.GetVersion());
             // Open the configuration file using the dll location
             this._settings = new Settings(ConfigurationManager.OpenExeConfiguration(this.GetType().Assembly.Location));
-            this._rootFolderPath = this._settings.getRootFolder();
-            this._currentPath = this._rootFolderPath;
-            Log.Info("rootFolderPath: " + this._rootFolderPath);
+            this._currentPath = this._settings.getRootFolder();
+            Log.Info("rootFolderPath: " + this._settings.getRootFolder());
             InitializeComponent();
         }
 
@@ -84,7 +82,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 // Get a reference to the variableList.
                 SolidEdgeFramework.VariableList variableList = (SolidEdgeFramework.VariableList)variables.Query("*", SolidEdgeConstants.VariableNameBy.seVariableNameByBoth, SolidEdgeConstants.VariableVarType.SeVariableVarTypeBoth, false);
                 Marshal.FinalReleaseComObject(variables);
-                PartProperty partProperty = null;
+                PartProperty partProperty = null;                
                 foreach (var property in variableList) {
                     partProperty = new PartProperty(property, partDocument.UnitsOfMeasure);
                     if (this._settings.isVariableDefined(partProperty.Name)) {
@@ -113,7 +111,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 SolidEdgePart.PartDocument partDocument = (SolidEdgePart.PartDocument)this.Document.Application.Documents.Open(this._filePath, 0x00000008);//, "8");
                 this.Document.Application.DoIdle();
                 Log.Debug("partDocument: " + partDocument.Name);
-                // Get file propertys of the partDocument
+                // Get file properties of the partDocument
                 SolidEdgeFramework.Properties objProperties = ((SolidEdgeFramework.PropertySets)partDocument.Properties).Item("Custom");
                 // Handles naming convention when it is not followed
                 int length = partDocument.Name.IndexOf(".par");
@@ -124,7 +122,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 string fileName = partDocument.Name.Substring(0, length);
                 foreach (PartProperty partProperty in this.partPropertyBindingSource) {
                     if (this._settings.isVariableDefined(partProperty.Name)) {
-                        SolidEdgeFramework.Property objProperty;
                         // Get a reference to the Variables collection.
                         SolidEdgeFramework.Variables variables = (SolidEdgeFramework.Variables)partDocument.Variables;
                         // Get a reference to the variableList.
@@ -145,11 +142,12 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                         Marshal.FinalReleaseComObject(variable);
                                         break;
                                 }
+                                // TODO: allow for order of appended values to be determined (L_x before B_x)
                                 fileName += this._settings.getFileNameSeparator() + partProperty.Value + " " + partProperty.Units;
                                 // Update file property
                                 try {
                                     // TODO: Fix exception when partProperty.Name is not defined in objProperties.Item
-                                    objProperty = objProperties.Item(partProperty.Name);
+                                    SolidEdgeFramework.Property objProperty = objProperties.Item(partProperty.Name);
                                     objProperty.set_Value(partProperty.Value.ToString());
                                     Marshal.FinalReleaseComObject(objProperty);
                                 } catch (Exception ex) {
@@ -222,7 +220,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
 
         private void BackButton_Click(object sender, EventArgs e) {
             int index = this._currentPath.LastIndexOf("\\");
-            if (index >= this._rootFolderPath.Length) {
+            if (index >= this._settings.getRootFolder().Length) {
                 string[] folders = this._currentPath.Split('\\');
                 this.currentDirectory.Text = folders[folders.Length - 2];
                 this._currentPath = this._currentPath.Substring(0, index);

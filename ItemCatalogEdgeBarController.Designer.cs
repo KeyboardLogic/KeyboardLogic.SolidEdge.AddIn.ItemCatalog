@@ -59,6 +59,7 @@
             // 
             this.edgeBar.Dock = System.Windows.Forms.DockStyle.Fill;
             this.edgeBar.Location = new System.Drawing.Point(0, 0);
+            this.edgeBar.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.edgeBar.Name = "edgeBar";
             this.edgeBar.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -70,8 +71,9 @@
             // edgeBar.Panel2
             // 
             this.edgeBar.Panel2.Controls.Add(this.panel1);
-            this.edgeBar.Size = new System.Drawing.Size(278, 630);
-            this.edgeBar.SplitterDistance = 350;
+            this.edgeBar.Size = new System.Drawing.Size(556, 1212);
+            this.edgeBar.SplitterDistance = 673;
+            this.edgeBar.SplitterWidth = 8;
             this.edgeBar.TabIndex = 0;
             // 
             // partLibrary
@@ -81,12 +83,13 @@
             this.partLibrary.HideSelection = false;
             this.partLibrary.LabelWrap = false;
             this.partLibrary.LargeImageList = this.partLibraryImageList;
-            this.partLibrary.Location = new System.Drawing.Point(0, 25);
+            this.partLibrary.Location = new System.Drawing.Point(0, 39);
+            this.partLibrary.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.partLibrary.MultiSelect = false;
             this.partLibrary.Name = "partLibrary";
             this.partLibrary.RightToLeftLayout = true;
             this.partLibrary.ShowGroups = false;
-            this.partLibrary.Size = new System.Drawing.Size(278, 325);
+            this.partLibrary.Size = new System.Drawing.Size(556, 634);
             this.partLibrary.SmallImageList = this.partLibraryImageList;
             this.partLibrary.TabIndex = 1;
             this.partLibrary.UseCompatibleStateImageBehavior = false;
@@ -105,15 +108,17 @@
             // 
             this.toolStrip1.AllowMerge = false;
             this.toolStrip1.CanOverflow = false;
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripLabel1,
             this.currentDirectory,
             this.backButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
             this.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.toolStrip1.ShowItemToolTips = false;
-            this.toolStrip1.Size = new System.Drawing.Size(278, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(556, 39);
             this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -121,7 +126,7 @@
             // 
             this.toolStripLabel1.Enabled = false;
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(43, 22);
+            this.toolStripLabel1.Size = new System.Drawing.Size(87, 36);
             this.toolStripLabel1.Text = "Folder:";
             // 
             // currentDirectory
@@ -131,7 +136,7 @@
             this.currentDirectory.HideSelection = false;
             this.currentDirectory.Name = "currentDirectory";
             this.currentDirectory.ReadOnly = true;
-            this.currentDirectory.Size = new System.Drawing.Size(125, 25);
+            this.currentDirectory.Size = new System.Drawing.Size(250, 39);
             // 
             // backButton
             // 
@@ -139,7 +144,7 @@
             this.backButton.Image = ((System.Drawing.Image)(resources.GetObject("backButton.Image")));
             this.backButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.backButton.Name = "backButton";
-            this.backButton.Size = new System.Drawing.Size(36, 22);
+            this.backButton.Size = new System.Drawing.Size(68, 36);
             this.backButton.Text = "Back";
             this.backButton.Click += new System.EventHandler(this.BackButton_Click);
             // 
@@ -148,14 +153,16 @@
             this.panel1.Controls.Add(this.configurationContainer);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(278, 276);
+            this.panel1.Size = new System.Drawing.Size(556, 531);
             this.panel1.TabIndex = 0;
             // 
             // configurationContainer
             // 
             this.configurationContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.configurationContainer.Location = new System.Drawing.Point(0, 0);
+            this.configurationContainer.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.configurationContainer.Name = "configurationContainer";
             this.configurationContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -167,8 +174,9 @@
             // 
             this.configurationContainer.Panel2.Controls.Add(this.cancelButton);
             this.configurationContainer.Panel2.Controls.Add(this.okButton);
-            this.configurationContainer.Size = new System.Drawing.Size(278, 276);
-            this.configurationContainer.SplitterDistance = 235;
+            this.configurationContainer.Size = new System.Drawing.Size(556, 531);
+            this.configurationContainer.SplitterDistance = 452;
+            this.configurationContainer.SplitterWidth = 8;
             this.configurationContainer.TabIndex = 2;
             // 
             // partProperties
@@ -186,20 +194,20 @@
             this.nameDataGridViewTextBoxColumn,
             this.valueDataGridViewTextBoxColumn,
             this.unitsDataGridViewTextBoxColumn});
-            this.partProperties.Cursor = System.Windows.Forms.Cursors.PanNW;
             this.partProperties.DataSource = this.partPropertyBindingSource;
             this.partProperties.Dock = System.Windows.Forms.DockStyle.Fill;
             this.partProperties.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.partProperties.GridColor = System.Drawing.SystemColors.Control;
             this.partProperties.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.partProperties.Location = new System.Drawing.Point(0, 0);
+            this.partProperties.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.partProperties.MultiSelect = false;
             this.partProperties.Name = "partProperties";
             this.partProperties.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.partProperties.ShowCellErrors = false;
             this.partProperties.ShowEditingIcon = false;
             this.partProperties.ShowRowErrors = false;
-            this.partProperties.Size = new System.Drawing.Size(278, 235);
+            this.partProperties.Size = new System.Drawing.Size(556, 452);
             this.partProperties.TabIndex = 0;
             this.partProperties.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.PartProperties_CellEnter);
             this.partProperties.SelectionChanged += new System.EventHandler(this.PartProperties_SelectionChanged);
@@ -214,6 +222,7 @@
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
             this.nameDataGridViewTextBoxColumn.ReadOnly = true;
             this.nameDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.nameDataGridViewTextBoxColumn.Width = 113;
             // 
             // valueDataGridViewTextBoxColumn
             // 
@@ -223,6 +232,7 @@
             this.valueDataGridViewTextBoxColumn.MinimumWidth = 100;
             this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
             this.valueDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.valueDataGridViewTextBoxColumn.Width = 112;
             // 
             // unitsDataGridViewTextBoxColumn
             // 
@@ -234,7 +244,7 @@
             this.unitsDataGridViewTextBoxColumn.Name = "unitsDataGridViewTextBoxColumn";
             this.unitsDataGridViewTextBoxColumn.ReadOnly = true;
             this.unitsDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.unitsDataGridViewTextBoxColumn.Width = 75;
+            this.unitsDataGridViewTextBoxColumn.Width = 106;
             // 
             // partPropertyBindingSource
             // 
@@ -243,9 +253,10 @@
             // cancelButton
             // 
             this.cancelButton.AutoSize = true;
-            this.cancelButton.Location = new System.Drawing.Point(84, 2);
+            this.cancelButton.Location = new System.Drawing.Point(168, 4);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(178, 67);
             this.cancelButton.TabIndex = 1;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -254,9 +265,10 @@
             // okButton
             // 
             this.okButton.AutoSize = true;
-            this.okButton.Location = new System.Drawing.Point(3, 2);
+            this.okButton.Location = new System.Drawing.Point(6, 4);
+            this.okButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.Size = new System.Drawing.Size(150, 67);
             this.okButton.TabIndex = 0;
             this.okButton.Text = "OK";
             this.okButton.UseVisualStyleBackColor = true;
@@ -264,11 +276,12 @@
             // 
             // ItemCatalogEdgeBarController
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.edgeBar);
+            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "ItemCatalogEdgeBarController";
-            this.Size = new System.Drawing.Size(278, 630);
+            this.Size = new System.Drawing.Size(556, 1212);
             this.ToolTip = "Item Catalog";
             this.AfterInitialize += new System.EventHandler(this.ControllerAfterInitialize);
             this.Load += new System.EventHandler(this.ControllerLoad);

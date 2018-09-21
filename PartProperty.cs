@@ -7,9 +7,6 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
     class PartProperty {
         private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         private readonly int UnitType = 1;
-        private string name;
-        private double value;
-        private string units;
 
         public PartProperty(object property, SolidEdgeFramework.UnitsOfMeasure unitesOfMeasure) {
             // TODO: Fix error in ST9 with UnitsType not accessible
@@ -26,17 +23,17 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 switch (objectType) {
                     case SolidEdgeFramework.ObjectType.igDimension:
                         SolidEdgeFrameworkSupport.Dimension dimension = (SolidEdgeFrameworkSupport.Dimension)property;
-                        this.name = dimension.DisplayName.ToString();
-                        this.value = GetValueofCurrentMeasure(unitesOfMeasure, this.UnitType, dimension.Value);
-                        this.units = GetUnitsOfCurrentMeasure(unitesOfMeasure, this.UnitType, dimension.Value);
+                        this.Name = dimension.DisplayName.ToString();
+                        this.Value = GetValueofCurrentMeasure(unitesOfMeasure, this.UnitType, dimension.Value);
+                        this.Units = GetUnitsOfCurrentMeasure(unitesOfMeasure, this.UnitType, dimension.Value);
                         Marshal.FinalReleaseComObject(dimension);
                         break;
                         // Currently only supporting dimension properties
                     case SolidEdgeFramework.ObjectType.igVariable:
                         SolidEdgeFramework.variable variable = (SolidEdgeFramework.variable)property;
-                        this.name = variable.DisplayName.ToString();
-                        this.value = GetValueofCurrentMeasure(unitesOfMeasure, this.UnitType, variable.Value);
-                        this.units = GetUnitsOfCurrentMeasure(unitesOfMeasure, this.UnitType, variable.Value);
+                        this.Name = variable.DisplayName.ToString();
+                        this.Value = GetValueofCurrentMeasure(unitesOfMeasure, this.UnitType, variable.Value);
+                        this.Units = GetUnitsOfCurrentMeasure(unitesOfMeasure, this.UnitType, variable.Value);
                         Marshal.FinalReleaseComObject(variable);
                         break;
                 }
@@ -45,11 +42,11 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             }
         }
 
-        public string Name { get => this.name; set => this.name = value; }
+        public string Name { get; set; }
 
-        public double Value { get => this.value; set => this.value = value; }
+        public double Value { get; set; }
 
-        public string Units { get => this.units; set => this.units = value; }
+        public string Units { get; set; }
 
         public double GetSolidEdgeStoredValue(SolidEdgeFramework.UnitsOfMeasure unitesOfMeasure) {
             return (double)unitesOfMeasure.ParseUnit(this.UnitType, this.Value.ToString());
