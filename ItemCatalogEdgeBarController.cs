@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -120,6 +121,7 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                     length = partDocument.Name.Length;
                 }
                 string fileName = partDocument.Name.Substring(0, length);
+                string[] variableValuesArray = new string[this._settings.getNumberOfVariables()];
                 foreach (PartProperty partProperty in this.partPropertyBindingSource) {
                     if (this._settings.isVariableDefined(partProperty.Name)) {
                         // Get a reference to the Variables collection.
@@ -142,8 +144,11 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                                         Marshal.FinalReleaseComObject(variable);
                                         break;
                                 }
-                                // TODO: allow for order of appended values to be determined (L_x before B_x)
-                                fileName += this._settings.getFileNameSeparator() + partProperty.Value + " " + partProperty.Units;
+                                Log.Debug(this._settings.getVariableIndex(partProperty.Name) + " >= " + variableValuesArray.Length);
+                                if (this._settings.getVariableIndex(partProperty.Name) >= variableValuesArray.Length) {
+                                    Array.Resize<string>(ref variableValuesArray, this._settings.getVariableIndex(partProperty.Name)+1);
+                                }
+                                variableValuesArray[this._settings.getVariableIndex(partProperty.Name)] = partProperty.Value + " " + partProperty.Units;
                                 // Update file property
                                 try {
                                     // TODO: Fix exception when partProperty.Name is not defined in objProperties.Item
@@ -165,6 +170,8 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
                 Marshal.FinalReleaseComObject(objProperties);
                 // Remove invalid fileName characters
                 fileName = string.Join("", fileName.Split(Path.GetInvalidFileNameChars()));
+                variableValuesArray = variableValuesArray.Where(c => c != null).ToArray();
+                fileName += "-" + string.Join(this._settings.getFileNameSeparator(), variableValuesArray);
                 Log.Debug("fileName: " + fileName);
                 string fullPathName = this.Document.Path;
                 string assemblyPartFolderName = _settings.getAssemblyPartFolderName();

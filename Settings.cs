@@ -42,6 +42,15 @@ namespace KeyboardLogic.SolidEdge.AddIn.ItemCatalog {
             return this._variables[name] != null && !string.IsNullOrEmpty(this._variables[name].Value);
         }
 
+        public int getNumberOfVariables() {
+            return this._variables.Count;
+        }
+
+        public int getVariableIndex(string name) {
+            int.TryParse(this._variables[name].Value, out var result);
+            return result;
+        }
+
         public string getFileNameSeparator() {
             return this._appSettings["fileNameSeparator"].Value;
         }
